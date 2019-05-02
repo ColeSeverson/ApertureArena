@@ -6,18 +6,23 @@ namespace Character
 {
     //This pattern is made to implement the command pattern for easier input management
     [RequireComponent(typeof(ThirdPersonCharacter))]
+    [RequireComponent(typeof(ThirdPersonCameraController))]
     public class InputController : MonoBehaviour
     {
         public Camera mainCamera;
 
+        private ThirdPersonCameraController cameraControl;
         private Transform cameraTransform;
         private ThirdPersonCharacter character;
         private bool jump;
         private bool crouch;
+        private bool aiming;
 
         private void Start()
         {
             character = GetComponent<ThirdPersonCharacter>();
+            cameraControl = mainCamera.GetComponent<ThirdPersonCameraController>();
+
             cameraTransform = mainCamera.transform;
         }
 
@@ -31,6 +36,10 @@ namespace Character
             if (!crouch)
             {
                 crouch = Input.GetKey(KeyCode.LeftControl);
+            }
+            if (!aiming)
+            {
+                aiming = Input.GetMouseButton(1);
             }
         }
         private void FixedUpdate()
@@ -46,6 +55,15 @@ namespace Character
             Vector3 cameraAngle = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
             Vector3 move = v * cameraAngle + h * cameraTransform.right;
 
+            //set up the aiming
+            float distance;
+            if (aiming)
+                distance = 2.5f;
+            else
+                distance = 5f;
+
+            cameraControl.setDistance(distance);
+
             if (!Input.GetKey(KeyCode.LeftShift))
             {
                 move = move * 0.5f;
@@ -57,6 +75,7 @@ namespace Character
 
             jump = false;
             crouch = false;
+            aiming = false;
         }
     }
 }

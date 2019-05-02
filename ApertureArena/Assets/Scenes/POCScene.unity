@@ -439,6 +439,7 @@ MonoBehaviour:
   debugText: {fileID: 811287773}
   YAngleMax: 25
   YAngleMin: -45
+  distance: 5
 --- !u!1 &740875355 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 149790, guid: 3ec63d0f62ff36246b881c97b0c5693a,
@@ -489,7 +490,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811287771}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
