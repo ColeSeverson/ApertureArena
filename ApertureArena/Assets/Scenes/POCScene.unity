@@ -434,11 +434,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24878c41680cd54f905255ffacfd75e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 991339943}
+  character: {fileID: 740875355}
   mouseSens: 3
   debugText: {fileID: 811287773}
   YAngleMax: 25
   YAngleMin: -45
+--- !u!1 &740875355 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 149790, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1863497054}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &811287771
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,7 +524,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811287771}
   m_CullTransparentMesh: 0
---- !u!1001 &991339942
+--- !u!1001 &1863497054
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -527,19 +533,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 149790, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
       propertyPath: m_Name
-      value: ThirdPersonController
+      value: Character
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.788699
+      value: -0.13
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.572696e-17
+      value: 9.5134955e-17
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.7215986
+      value: -6.63
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
       propertyPath: m_LocalRotation.x
@@ -573,14 +579,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8547798876628538877, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 534669904}
+    - target: {fileID: 29027128302233542, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: m_JumpPower
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 29027128302233542, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: m_GroundCheckDistance
+      value: 0.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
---- !u!1 &991339943 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 149790, guid: 3ec63d0f62ff36246b881c97b0c5693a,
-    type: 3}
-  m_PrefabInstance: {fileID: 991339942}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1911091745
 GameObject:
   m_ObjectHideFlags: 0
