@@ -12,7 +12,8 @@ namespace Character
         public Text debugText;
         public float YAngleMax = 25f;
         public float YAngleMin = -45f;
-        public float distance = 5.0f;
+
+        private Vector3 distance = new Vector3(0, 0, 5f);
 
 
         private Vector3 lastMousePos = new Vector3(255, 255, 255);
@@ -23,11 +24,11 @@ namespace Character
         {
 
         }
-        public void setDistance(float f)
+        public void setDistance(Vector3 v)
         {
-            distance = f;
+            distance = v;
         }
-        public float getDistance()
+        public Vector3 getDistance()
         {
             return distance;
         }
@@ -46,7 +47,7 @@ namespace Character
         {
             //In LateUpdate we will actually process the mouse inputs
             //Direction is the base position behind the player the camera should be
-            Vector3 direction = new Vector3(0, 0, -distance);
+            Vector3 direction = -distance;
             //rotation is the calulated rotation position
             Quaternion rotation = Quaternion.Euler(-cameraAngle.y, cameraAngle.x, 0);
             //mulitplying rotation and direction gives the calulated position that the camera will end up in

@@ -1,16 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Character
 {
     //This pattern is made to implement the command pattern for easier input management
     [RequireComponent(typeof(ThirdPersonCharacter))]
     [RequireComponent(typeof(ThirdPersonCameraController))]
+    [RequireComponent(typeof(Image))]
     public class InputController : MonoBehaviour
     {
         public Camera mainCamera;
-
+        public Image crossHair;
+        
         private ThirdPersonCameraController cameraControl;
         private Transform cameraTransform;
         private ThirdPersonCharacter character;
@@ -56,11 +59,17 @@ namespace Character
             Vector3 move = v * cameraAngle + h * cameraTransform.right;
 
             //set up the aiming
-            float distance;
+            Vector3 distance;
             if (aiming)
-                distance = 2.5f;
+            {
+                distance = new Vector3(0, 0, 2.5f);
+                crossHair.enabled = true;
+            }
             else
-                distance = 5f;
+            {
+                crossHair.enabled = false;
+                distance = new Vector3(0, 0, 5f);
+            }
 
             cameraControl.setDistance(distance);
 
