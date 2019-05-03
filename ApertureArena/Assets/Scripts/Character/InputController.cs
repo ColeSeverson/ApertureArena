@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿/*
+ * Written by Cole Severson
+ * Handles inputs and passes them to the ThirdPersonCharacter.
+ * This will be changed for the alpha, when we implement the command pattern
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -87,7 +93,7 @@ namespace Character
 
             if (shoot && reload == 0)
             {
-                reload = 10;
+                reload = 2;
                 GameObject bul = Instantiate(Bullet, transform.position + (cameraTransform.forward * .5f) + new Vector3(0f, 1.4f, 0f), Quaternion.identity);
                 bullet temp = (bullet) bul.GetComponent(typeof(bullet));
                 temp.direction = mainCamera.transform.forward;

@@ -1,3 +1,8 @@
+/*
+ * This is the code included in unity essentials to animate the character
+ * This will be removed for our alpha when our own movement system is implemented
+ */
+
 using UnityEngine;
 
 namespace  Character

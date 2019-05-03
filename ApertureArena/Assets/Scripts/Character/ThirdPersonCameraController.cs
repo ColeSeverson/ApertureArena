@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Written By Cole Severson
+ * 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
