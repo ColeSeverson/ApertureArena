@@ -13,6 +13,7 @@ namespace Character
     {
         public Camera mainCamera;
         public Image crossHair;
+        public GameObject Bullet;
         
         private ThirdPersonCameraController cameraControl;
         private Transform cameraTransform;
@@ -20,6 +21,8 @@ namespace Character
         private bool jump;
         private bool crouch;
         private bool aiming;
+        private bool shoot;
+        private int reload = 0;
 
         private void Start()
         {
@@ -44,7 +47,18 @@ namespace Character
             {
                 aiming = Input.GetMouseButton(1);
             }
+            if (!shoot)
+            {
+                shoot = Input.GetMouseButton(0);
+            }
         }
+
+        private void count()
+        {
+            if(reload > 0)
+                reload = reload - 1;
+        }
+
         private void FixedUpdate()
         {
             float v = Input.GetKey(KeyCode.W) ? 1 : 0;
@@ -71,6 +85,17 @@ namespace Character
                 distance = new Vector3(0, 0, 5f);
             }
 
+            if (shoot && reload == 0)
+            {
+                reload = 10;
+                GameObject bul = Instantiate(Bullet, transform.position + (cameraTransform.forward * .5f) + new Vector3(0f, 1.4f, 0f), Quaternion.identity);
+                bullet temp = (bullet) bul.GetComponent(typeof(bullet));
+                temp.direction = mainCamera.transform.forward;
+
+                InvokeRepeating("count", 0.01f, 1f);
+            }
+          
+
             cameraControl.setDistance(distance);
 
             if (!Input.GetKey(KeyCode.LeftShift))
@@ -85,6 +110,7 @@ namespace Character
             jump = false;
             crouch = false;
             aiming = false;
+            shoot = false;
         }
     }
 }

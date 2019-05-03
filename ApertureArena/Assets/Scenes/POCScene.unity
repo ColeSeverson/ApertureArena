@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -831,6 +831,12 @@ PrefabInstance:
       propertyPath: crossHair
       value: 
       objectReference: {fileID: 1257538539}
+    - target: {fileID: 8547798876628538877, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: Bullet
+      value: 
+      objectReference: {fileID: 9123253773993485578, guid: baf61b14564ba1645b439bf328af706e,
+        type: 3}
     - target: {fileID: 29027128302233542, guid: 3ec63d0f62ff36246b881c97b0c5693a,
         type: 3}
       propertyPath: m_JumpPower
