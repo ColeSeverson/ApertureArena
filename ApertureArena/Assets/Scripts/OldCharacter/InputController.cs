@@ -20,7 +20,7 @@ namespace Character
         public Camera mainCamera;
         public Image crossHair;
         public GameObject Bullet;
-        
+
         private ThirdPersonCameraController cameraControl;
         private Transform cameraTransform;
         private ThirdPersonCharacter character;
@@ -100,7 +100,7 @@ namespace Character
 
                 InvokeRepeating("count", 0.01f, 1f);
             }
-          
+
 
             cameraControl.setDistance(distance);
 
@@ -120,4 +120,3 @@ namespace Character
         }
     }
 }
- 
