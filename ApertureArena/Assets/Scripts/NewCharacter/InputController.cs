@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CharacterController {
 
   [RequireComponent(typeof(ThirdPersonCharacter))]
-  [RequireComponent(typeof(ThirdPersonCameraController))]
+  //[RequireComponent(typeof(ThirdPersonCameraController))]
   public class InputController : MonoBehaviour
   {
     //Public Vars
@@ -36,6 +36,7 @@ namespace CharacterController {
       float horz = Input.GetAxis("Horizontal");
       float vert = Input.GetAxis("Vertical");
 
+      //Debug.Log(horz + ", " + vert);
       //check for inputs
       if (horz != 0 || vert != 0) {
         //Vector3 direction = new Vector3(horz, 0, vert);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace CharacterController {
-  enum charState
+  enum moveState
   {
     Standing,
     Airborn,
@@ -16,7 +16,7 @@ namespace CharacterController {
   public abstract class Command
   {
     //temporary bools
-      public bool jump, crouch, sprint;
+      protected static bool jump, crouch, sprint;
       private ThirdPersonCharacter character;
       //private ThirdPersonCameraController camera;
       //private Image crossHair;
@@ -31,11 +31,15 @@ namespace CharacterController {
       //bool jump = if charState == Jumping ? true : false;
       //bool crouching = if charState == Crouching ? true : false;
 
+    //  Debug.Log("Command-Move");
+
       //add Sprinting
       Vector3 cameraAngle = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
-      Vector3 move = dir.z * cameraAngle + dir.y * cameraTransform.right;
+      Vector3 move = dir.z * cameraAngle + dir.x * cameraTransform.right;
 
-      move = sprint ? move : move * 0.5f;
+      Debug.Log(move.ToString());
+      move = sprint ? move.normalized : move.normalized * 0.5f;
+
 
       character.Move(move, crouch, jump);
     }
@@ -45,6 +49,7 @@ namespace CharacterController {
     //really should call something like character.jump();
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
     public override void Execute(bool jumping){
+    //  Debug.Log("Command-Jump");
       jump = jumping;
     }
   }
@@ -53,6 +58,7 @@ namespace CharacterController {
     //really should call something like character.jump();
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
     public override void Execute(bool crouching){
+    //  Debug.Log("Command-Crouch");
       crouch = crouching;
     }
   }
@@ -61,6 +67,7 @@ namespace CharacterController {
     //really should call something like character.jump();
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
     public override void Execute(bool sprinting){
+    //  Debug.Log("Command-Sprint");
       sprint = sprinting;
     }
   }
