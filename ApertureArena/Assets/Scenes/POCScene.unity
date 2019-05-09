@@ -1293,6 +1293,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3495333824268578503, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: m_MoveSpeedMultiplier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3495333824268578503, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: m_AnimSpeedMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
 --- !u!1 &1911091745
