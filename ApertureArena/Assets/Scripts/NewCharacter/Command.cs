@@ -23,6 +23,7 @@ namespace CharacterController {
 
       public virtual void Execute(ThirdPersonCharacter character, Transform cameraAngle, Vector3 dir){}
       public virtual void Execute(bool boolean){}
+      public virtual void Execute(ThirdPersonCharacter character){}
   }
 
   public class Move : Command
@@ -37,11 +38,17 @@ namespace CharacterController {
       Vector3 cameraAngle = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
       Vector3 move = dir.z * cameraAngle + dir.x * cameraTransform.right;
 
-      Debug.Log(move.ToString());
+    //  Debug.Log(move.ToString());
       move = sprint ? move.normalized : move.normalized * 0.5f;
 
 
       character.Move(move, crouch, jump);
+    }
+  }
+  public class Blink : Command
+  {
+    public override void Execute(ThirdPersonCharacter character) {
+      character.Blink();
     }
   }
   public class Jump : Command

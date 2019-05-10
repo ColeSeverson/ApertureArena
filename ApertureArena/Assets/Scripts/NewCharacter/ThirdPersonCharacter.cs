@@ -4,6 +4,7 @@
  */
 
 using UnityEngine;
+using System.Collections;
 
 namespace CharacterController
 {
@@ -12,6 +13,8 @@ namespace CharacterController
 	[RequireComponent(typeof(Animator))]
 	public class ThirdPersonCharacter : MonoBehaviour
 	{
+
+		//Serialized fields inlcuded for the animations
 		[SerializeField] float m_MovingTurnSpeed = 360;
 		[SerializeField] float m_StationaryTurnSpeed = 180;
 		[SerializeField] float m_JumpPower = 12f;
@@ -21,18 +24,30 @@ namespace CharacterController
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
 
+		//serialized fields for added code
+		[SerializeField] float c_BlinkDistance = .25f;
+		[SerializeField] float c_IFrameDuration = 1f;
+
+
+		//componenets included in the Avatar
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
-		bool m_IsGrounded;
+		CapsuleCollider m_Capsule;
+		SkinnedMeshRenderer c_Mesh;
+
+		Vector3 c_CurrentMove;
+		Vector3 m_GroundNormal;
+		Vector3 m_CapsuleCenter;
+
 		float m_OrigGroundCheckDistance;
-		const float k_Half = 0.5f;
 		float m_TurnAmount;
 		float m_ForwardAmount;
-		Vector3 m_GroundNormal;
 		float m_CapsuleHeight;
-		Vector3 m_CapsuleCenter;
-		CapsuleCollider m_Capsule;
+		const float k_Half = 0.5f;
+
 		bool m_Crouching;
+		bool m_IsGrounded;
+		bool c_Blinking;
 
 
 		void Start()
@@ -40,6 +55,7 @@ namespace CharacterController
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
 			m_Capsule = GetComponent<CapsuleCollider>();
+			c_Mesh = GetComponentsInChildren<SkinnedMeshRenderer>()[0];
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
 
@@ -47,9 +63,25 @@ namespace CharacterController
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 		}
 
-
+		IEnumerator IFrames(){
+			c_Mesh.enabled = false;
+			c_Blinking = true;
+			yield return new WaitForSeconds(c_IFrameDuration);
+			//transform.position = transform.position + (c_CurrentMove.normalized * c_BlinkDistance);
+			//transform.position = transform.position + new Vector3(0f, 1f, 0f);
+			c_Mesh.enabled = true;
+			c_Blinking = false;
+		}
+		public void Blink(){
+			//dissapear -> enable iFrames -> create particle effects -> move -> reeapear
+			Debug.Log("Blink");
+			StartCoroutine(IFrames());
+		}
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
+
+			if (c_Blinking)
+				return;
 
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
@@ -78,6 +110,7 @@ namespace CharacterController
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
+			c_CurrentMove = move;
 		}
 
 

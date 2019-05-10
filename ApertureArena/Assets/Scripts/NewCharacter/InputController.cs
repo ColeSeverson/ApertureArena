@@ -24,7 +24,7 @@ namespace CharacterController {
 
       moveAxis = new Move();
       buttonSpace = new Jump();
-      buttonControl = new Crouch();
+      buttonControl = new Blink();
       buttonShift = new Sprint();
     }
 
@@ -42,8 +42,10 @@ namespace CharacterController {
         //Vector3 direction = new Vector3(horz, 0, vert);
         moveAxis.Execute(character, cameraTransform, new Vector3(horz, 0, vert));
       }
+      if (Input.GetKey(KeyCode.LeftControl)) {
+        buttonControl.Execute(character);
+      }
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
-      buttonControl.Execute(Input.GetKey(KeyCode.LeftControl));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
     }
 
