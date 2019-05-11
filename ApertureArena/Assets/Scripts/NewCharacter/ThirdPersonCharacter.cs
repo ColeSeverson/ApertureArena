@@ -80,20 +80,30 @@ namespace CharacterController
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
 
-			if (c_Blinking)
+			if (c_Blinking) {
+				UpdateAnimator(new Vector3(0, 0, 0));
 				return;
+			}
 
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
 			// direction.
-			if (move.magnitude > 1f) move.Normalize();
-			move = transform.InverseTransformDirection(move);
+			if (move.magnitude > 1f)
+				move.Normalize();
+
+			//Check the new Ground Status
 			CheckGroundStatus();
+
+			//Changes the move to relative vectors, and projects it on the plane of the ground
+			move = transform.InverseTransformDirection(move);
+			c_CurrentMove = move;
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
+
+			//Get the amount we will need to turn and the forward amount
 			m_TurnAmount = Mathf.Atan2(move.x, move.z);
 			m_ForwardAmount = move.z;
+			transform.Rotate(0, m_TurnAmount * 9999 * Time.deltaTime, 0);
 
-			ApplyExtraTurnRotation();
 
 			// control and velocity handling is different when grounded and airborne:
 			if (m_IsGrounded)
@@ -102,7 +112,7 @@ namespace CharacterController
 			}
 			else
 			{
-				HandleAirborneMovement();
+				HandleAirborneMovement(move);
 			}
 
 			ScaleCapsuleForCrouching(crouch);
@@ -110,9 +120,34 @@ namespace CharacterController
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
-			c_CurrentMove = move;
 		}
 
+		void HandleAirborneMovement(Vector3 move)
+		{
+			//Allow airborne movement
+		//	Vector3 airMove = new Vector3(move.x*6f, m_Rigidbody.velocity.y, move.z*6f);
+		//	m_Rigidbody.velocity = Vector3.Lerp(m_Rigidbody.velocity, airMove, Time.deltaTime*2f);
+
+			// apply extra gravity from multiplier:
+			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
+			m_Rigidbody.AddForce(extraGravityForce);
+
+			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
+		}
+
+
+		void HandleGroundedMovement(bool crouch, bool jump)
+		{
+			// check whether conditions are right to allow a jump:
+			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
+			{
+				// jump!
+				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
+				m_IsGrounded = false;
+				m_Animator.applyRootMotion = false;
+				m_GroundCheckDistance = 0.1f;
+			}
+		}
 
 		void ScaleCapsuleForCrouching(bool crouch)
 		{
@@ -152,7 +187,7 @@ namespace CharacterController
 			}
 		}
 
-
+		//This code was included in the default assets to control the characters animation cycle
 		void UpdateAnimator(Vector3 move)
 		{
 			// update the animator parameters
@@ -190,38 +225,6 @@ namespace CharacterController
 			}
 		}
 
-
-		void HandleAirborneMovement()
-		{
-			// apply extra gravity from multiplier:
-			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
-			m_Rigidbody.AddForce(extraGravityForce);
-
-			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
-		}
-
-
-		void HandleGroundedMovement(bool crouch, bool jump)
-		{
-			// check whether conditions are right to allow a jump:
-			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
-			{
-				// jump!
-				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
-				m_IsGrounded = false;
-				m_Animator.applyRootMotion = false;
-				m_GroundCheckDistance = 0.1f;
-			}
-		}
-
-		void ApplyExtraTurnRotation()
-		{
-			// help the character turn faster (this is in addition to root rotation in the animation)
-			float turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
-			transform.Rotate(0, m_TurnAmount * turnSpeed * Time.deltaTime, 0);
-		}
-
-
 		public void OnAnimatorMove()
 		{
 			// we implement this function to override the default root motion.
@@ -231,6 +234,16 @@ namespace CharacterController
 				Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
 
 				// we preserve the existing y part of the current velocity.
+				v.y = m_Rigidbody.velocity.y;
+				m_Rigidbody.velocity = v;
+			} else {
+				//IE we are airborn
+				Vector3 move = c_CurrentMove.normalized;
+
+				Vector3 dir = transform.InverseTransformDirection(move).normalized;
+				Vector3 v = (dir * m_MoveSpeedMultiplier * 5f);
+				v.x = -v.x;
+
 				v.y = m_Rigidbody.velocity.y;
 				m_Rigidbody.velocity = v;
 			}
