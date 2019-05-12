@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
 
   //  private Vector3 offset;
 
-    private float distance = 5.0f;
+    private float distance = 1.0f;
     private Vector3 lastMousePos = new Vector3(255, 255, 255);
     //private Vector3 mouseChange = new Vector3(0,0,0);
     private Vector2 cameraAngle = new Vector2(0, -25);
@@ -62,12 +62,12 @@ public class CameraController : MonoBehaviour
     private void LateUpdate()
     {
         //In LateUpdate we will actually process the mouse inputs
-        //Direction is the base position behind the player the camera should be
-        Vector3 direction = new Vector3(0, 0, -distance);
+        //pos is the base position behind the player the camera should be
+        Vector3 pos = new Vector3(0, 0, -4f);
         //rotation is the calulated rotation position
         Quaternion rotation = Quaternion.Euler(-cameraAngle.y, cameraAngle.x, 0);
         //mulitplying rotation and direction gives the calulated position that the camera will end up in
-        transform.position = character.transform.position  + rotation * direction;
+        transform.position = character.transform.position + new Vector3(0, 1.4f, 0)  + rotation * pos;
         transform.LookAt(character.transform.position + new Vector3(0, 1.4f, 0));
     }
 }
