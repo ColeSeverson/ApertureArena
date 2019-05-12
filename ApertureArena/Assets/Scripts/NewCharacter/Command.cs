@@ -48,7 +48,7 @@ namespace CharacterController {
   public class Blink : Command
   {
     public override void Execute(ThirdPersonCharacter character) {
-      character.Blink();
+      //character.Blink();
     }
   }
   public class Jump : Command
