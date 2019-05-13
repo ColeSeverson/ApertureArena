@@ -16,7 +16,7 @@ namespace CharacterController {
     //private ThirdPersonCameraController cameraController;
     private ThirdPersonCharacter character;
     private Transform cameraTransform;
-    private Command moveAxis, buttonSpace, buttonControl, buttonShift;
+    private Command moveAxis, buttonSpace, buttonControl, buttonShift, buttonLeftMouse, buttonRightMouse;
     private float lastHorz, lastVert;
 
 
@@ -28,6 +28,8 @@ namespace CharacterController {
       buttonSpace = new Jump();
       buttonControl = new Blink();
       buttonShift = new Sprint();
+      buttonLeftMouse = new Attack();
+      buttonRightMouse = new ADS();
     }
 
     private void Update() {
@@ -42,8 +44,12 @@ namespace CharacterController {
       if (Input.GetKey(KeyCode.LeftControl)) {
         buttonControl.Execute(character);
       }
+      if(Input.GetMouseButtonDown(0))
+        buttonLeftMouse.Execute();
+
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
+      buttonRightMouse.Execute(Input.GetMouseButtonDown(1));
       moveAxis.Execute(character, cameraTransform, new Vector3(horz, 0, vert));
 
       lastHorz = horz;
