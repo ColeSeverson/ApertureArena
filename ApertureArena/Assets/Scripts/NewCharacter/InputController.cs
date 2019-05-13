@@ -44,8 +44,10 @@ namespace CharacterController {
       if (Input.GetKey(KeyCode.LeftControl)) {
         buttonControl.Execute(character);
       }
-      if(Input.GetMouseButtonDown(0))
-        buttonLeftMouse.Execute();
+
+      if(Input.GetMouseButton(0))
+        buttonLeftMouse.Execute(character);
+      //buttonLeftMouse.Execute(character, Input.GetMouseButton(0));
 
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));

@@ -49,6 +49,7 @@ namespace CharacterController
 		bool m_Crouching;
 		bool m_IsGrounded;
 		bool c_Blinking;
+		bool c_Attacking;
 
 
 		void Start()
@@ -82,7 +83,7 @@ namespace CharacterController
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
 
-			if (c_Blinking) {
+			if (c_Blinking || c_Attacking) {
 				UpdateAnimator(new Vector3(0, 0, 0));
 				return;
 			}
@@ -226,7 +227,18 @@ namespace CharacterController
 				m_Animator.speed = 1;
 			}
 		}
-
+		IEnumerator Attacking(){
+				yield return new WaitForSeconds(.1f);
+				m_Animator.SetBool("Attacking", false);
+				c_Attacking = false;
+		}
+		public void Attack(bool attack){
+			if(m_Animator.GetBool("OnGround")){
+				m_Animator.SetBool("Attacking", attack);
+				c_Attacking = attack;
+				StartCoroutine(Attacking());
+			}
+		}
 		public void OnAnimatorMove()
 		{
 			// we implement this function to override the default root motion.
@@ -274,7 +286,7 @@ namespace CharacterController
 			else
 			{
 				m_IsGrounded = false;
-				m_GroundNormal = Vector3.up;  
+				m_GroundNormal = Vector3.up;
 				m_Animator.applyRootMotion = false;
 			}
 		}
