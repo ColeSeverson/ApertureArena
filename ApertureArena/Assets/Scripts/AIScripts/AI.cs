@@ -2,21 +2,22 @@
 using AIStates;
 
 
+//This is a pretty simple driver for our AI, elements of it are fomr the Survival Shooter Unity Tutorial
+
 public class AI : MonoBehaviour
 {
     public bool switchState = false;
     //public float gameTimer;
     //public int seconds = 0;
 
-    public int startHealth= 500;
+    public int startHealth = 500;
     public int currHealth;
     Transform player;
     UnityEngine.AI.NavMeshAgent nav;
     Animator anim;
-    bool isDead;
-    int attackMove;
 
-    public StateMachine<AI> stateMachine { get; set; }
+
+    public StateMachine<AI> stateMachine { get; set; } // will be used later for now it's not used
 
     private void Awake()
     {
@@ -30,8 +31,6 @@ public class AI : MonoBehaviour
 
     private void Update()
     {
-
-
         if(anim.GetBool("isDead"))
         {
             OnDeath();
@@ -44,6 +43,7 @@ public class AI : MonoBehaviour
 
     }
 
+    // Set the animator to be doing the attack move based on a 
     private void OnTriggerEnter(Collider other)
     {
 
@@ -53,7 +53,7 @@ public class AI : MonoBehaviour
         }
     }
 
-
+    // Destroys the game object and 
     private void OnDeath()
     {
         anim.SetBool("isMoving", false);

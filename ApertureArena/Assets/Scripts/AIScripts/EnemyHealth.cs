@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
+//This code is taken from the Survival Shooter Unity tutorial, we did this project for our assignment 2 so the schema of this set up was familiar to me.
+
 namespace EnemyInformation
 {
     public class EnemyHealth : MonoBehaviour
     {
         public int startingHealth = 500;            // The amount of health the enemy starts the game with.
         public int currentHealth;                   // The current health the enemy has.
-        //public float sinkSpeed = 2.5f;              // The speed at which the enemy sinks through the floor when dead.
-        //public int scoreValue = 10;                 // The amount added to the player's score when the enemy dies.
         public AudioClip deathClip;                 // The sound to play when the enemy dies.
 
         Animator anim;                              // Reference to the animator.
@@ -21,7 +21,7 @@ namespace EnemyInformation
 
         void Awake()
         {
-            // Setting up the references.
+            // Setting up the references for use later.
             anim = GetComponent<Animator>();
             enemyAudio = GetComponent<AudioSource>();
             capsuleCollider = GetComponent<CapsuleCollider>();
@@ -44,24 +44,16 @@ namespace EnemyInformation
                 // ... no need to take damage so exit the function.
                 return;
 
-            // Play the hurt sound effect.
+            // Play the hurt sound effect. We havent implemented this yet but will in the future
             //enemyAudio.Play();
 
             // Reduce the current health by the amount of damage sustained.
             currentHealth -= amount;
 
-            // Set the position of the particle system to where the hit was sustained.
-            //hitParticles.transform.position = hitPoint;
-
-
-            // And play the particles.
-            //hitParticles.Play();
-
             // If the current health is less than or equal to zero...
             if (currentHealth <= 0)
             {
-                // ... the enemy is dead.
-
+                // using a function to be able to add functionality later and keep the logic contained
                 Death();
             }
         }
@@ -69,18 +61,12 @@ namespace EnemyInformation
 
         void Death()
         {
-            // The enemy is dead.
+            // The enemy is dead. This tells the script.
             isDead = true;
-
-            // Turn the collider into a trigger so shots can pass through it.
-            //capsuleCollider.isTrigger = true;
 
             // Tell the animator that the enemy is dead.
             anim.SetBool("isDead", true);
 
-            // Change the audio clip of the audio source to the death clip and play it (this will stop the hurt clip playing).
-            //enemyAudio.clip = deathClip;
-            //enemyAudio.Play();
         }
     }
 }
