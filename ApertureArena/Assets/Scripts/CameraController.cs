@@ -67,7 +67,7 @@ public class CameraController : MonoBehaviour
         //rotation is the calulated rotation position
         Quaternion rotation = Quaternion.Euler(-cameraAngle.y, cameraAngle.x, 0);
         //mulitplying rotation and direction gives the calulated position that the camera will end up in
-        transform.position = character.transform.position + new Vector3(0, 1.4f, 0)  + rotation * pos;
-        transform.LookAt(character.transform.position + new Vector3(0, 1.4f, 0));
+        transform.position = character.transform.position + new Vector3(0, 2f, 0)  + rotation * pos;
+        transform.LookAt(character.transform.position + new Vector3(0, 2f, 0));
     }
 }

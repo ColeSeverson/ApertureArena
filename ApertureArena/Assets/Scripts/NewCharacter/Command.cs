@@ -24,7 +24,8 @@ namespace CharacterController {
       public virtual void Execute(ThirdPersonCharacter character, Transform cameraAngle, Vector3 dir){}
       public virtual void Execute(bool boolean){}
       public virtual void Execute(ThirdPersonCharacter character){}
-        public virtual void Execute(ThirdPersonCharacter character, bool boolean){}
+      public virtual void Execute(ThirdPersonCharacter character, Transform t){}
+      public virtual void Execute(ThirdPersonCharacter character, bool boolean){}
       public virtual void Execute(){}
   }
 
@@ -84,9 +85,9 @@ namespace CharacterController {
   {
     //really should call something like character.jump();
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
-    public override void Execute(ThirdPersonCharacter character){
-      Debug.Log("Command-Attack");
-      character.Attack(character);
+    public override void Execute(ThirdPersonCharacter character, Transform t){
+      //Debug.Log("Command-Attack");
+      character.Attack(character, t);
     }
   }
   public class ADS : Command

@@ -38,6 +38,8 @@ namespace CharacterController
 		Vector3 c_CurrentMove;
 		Vector3 m_GroundNormal;
 		Vector3 m_CapsuleCenter;
+		Weapon c_Weapon;
+
 
 		float m_OrigGroundCheckDistance;
 		float m_TurnAmount;
@@ -61,6 +63,7 @@ namespace CharacterController
 			m_Rigidbody = GetComponent<Rigidbody>();
 			m_Capsule = GetComponent<CapsuleCollider>();
 			c_Mesh = GetComponentsInChildren<SkinnedMeshRenderer>()[0];
+			c_Weapon = GetComponentsInChildren<Weapon>()[0];
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
 			c_CapsuleRadius = m_Capsule.radius;
@@ -103,7 +106,7 @@ namespace CharacterController
 		{
 
 			if (c_Blinking || c_Attacking || c_Dying) {
-				UpdateAnimator(new Vector3(0, 0, 0));
+				//UpdateAnimator(new Vector3(0, 0, 0));
 				return;
 			}
 
@@ -247,15 +250,21 @@ namespace CharacterController
 			}
 		}
 		IEnumerator Attacking(){
-				yield return new WaitForSeconds(.1f);
+				yield return new WaitForSeconds(.3f);
 				m_Animator.SetBool("Attacking", false);
 				c_Attacking = false;
 		}
-		public void Attack(bool attack){
+		public void Attack(bool attack, Transform cameraAngle){
 			if(m_Animator.GetBool("OnGround")){
 				m_Animator.SetBool("Attacking", attack);
 				c_Attacking = attack;
 				StartCoroutine(Attacking());
+				//now we do all of our gun stuff!
+				//float timer = 0f;
+				Vector3 toFace = Vector3.Scale(cameraAngle.forward, new Vector3(1, 0, 1)).normalized;
+				transform.forward = toFace;
+				c_Weapon.Execute();
+
 			}
 		}
 		public void OnAnimatorMove()

@@ -46,7 +46,7 @@ namespace CharacterController {
       }
 
       if(Input.GetMouseButton(0))
-        buttonLeftMouse.Execute(character);
+        buttonLeftMouse.Execute(character, cameraTransform);
       //buttonLeftMouse.Execute(character, Input.GetMouseButton(0));
 
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
