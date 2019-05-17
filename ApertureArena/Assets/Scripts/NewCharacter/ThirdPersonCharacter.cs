@@ -80,10 +80,9 @@ namespace CharacterController
 
 			}
 		}
-		void OnCollisionEnter(Collision col) {
+		void OnTriggerEnter(Collider col) {
 			if (col.gameObject.tag == "Spear") {
 				c_Health -= 40;
-				Debug.Log("Ouch");
 			}
 		}
 

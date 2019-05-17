@@ -38,14 +38,14 @@ namespace EnemyInformation
 
         public void TakeDamage(int amount, Vector3 hitPoint)
         {
-          Debug.Log("Ouch");
+ 
             // If the enemy is dead...
             if (isDead)
                 // ... no need to take damage so exit the function.
                 return;
 
             // Play the hurt sound effect.
-            enemyAudio.Play();
+            //enemyAudio.Play();
 
             // Reduce the current health by the amount of damage sustained.
             currentHealth -= amount;
@@ -61,6 +61,7 @@ namespace EnemyInformation
             if (currentHealth <= 0)
             {
                 // ... the enemy is dead.
+
                 Death();
             }
         }
@@ -72,27 +73,14 @@ namespace EnemyInformation
             isDead = true;
 
             // Turn the collider into a trigger so shots can pass through it.
-            capsuleCollider.isTrigger = true;
+            //capsuleCollider.isTrigger = true;
 
             // Tell the animator that the enemy is dead.
-            anim.SetTrigger("Dead");
+            anim.SetBool("isDead", true);
 
             // Change the audio clip of the audio source to the death clip and play it (this will stop the hurt clip playing).
-            enemyAudio.clip = deathClip;
-            enemyAudio.Play();
-        }
-
-
-        public void StartSinking()
-        {
-            // Find and disable the Nav Mesh Agent.
-            GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
-
-            // Find the rigidbody component and make it kinematic (since we use Translate to sink the enemy).
-            GetComponent<Rigidbody>().isKinematic = true;
-
-            // After 2 seconds destory the enemy. Destroy on exit arena prolly.
-            Destroy(gameObject, 2f);
+            //enemyAudio.clip = deathClip;
+            //enemyAudio.Play();
         }
     }
 }

@@ -30,11 +30,11 @@ public class AI : MonoBehaviour
 
     private void Update()
     {
-        //Move this stuff to states, that do different things
 
-        if(isDead)
+
+        if(anim.GetBool("isDead"))
         {
-            anim.SetBool("isMoving", false);
+            OnDeath();
         }
         else
         {
@@ -46,64 +46,19 @@ public class AI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Collision!");
-        //Debug.Log(other.gameObject.tag);
+
         if (other.gameObject.tag == "Player")
         {
             anim.SetBool("isAttacking2", true);
-            attackMove = 1;
         }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        /*
-        if (other.gameObject.name == "Character")
-        {
-            //"logic" for attack switching
-            switch(attackMove)
-            {
-                case 1:
-                    anim.SetBool("isAttacking1", false);
-                    anim.SetBool("isAttacking2", true);
-                    attackMove = 2;
-                    break;
-
-                case 2:
-                    anim.SetBool("isAttacking2", false);
-                    anim.SetBool("isAttacking3", true);
-                    attackMove = 3;
-                    break;
-
-                case 3:
-                    anim.SetBool("isAttacking3", false);
-                    anim.SetBool("isAttacking1", true);
-                    attackMove = 1;
-                    break;
-
-                default:
-                    Debug.Log("this should not have happened");
-                    break;
-            }
-        }
-        */
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        /*Debug.Log("exit");
-        Debug.Log(other.name);
-        anim.SetBool("isAttacking1", false);
-        anim.SetBool("isAttacking2", false);
-        anim.SetBool("isAttacking3", false);
-        anim.SetBool("isMoving", false);*/
     }
 
 
     private void OnDeath()
     {
-        anim.SetBool("isDead", isDead = true);
+        anim.SetBool("isMoving", false);
         nav.enabled = false;
+        Destroy(gameObject, 2f);
 
     }
 }
