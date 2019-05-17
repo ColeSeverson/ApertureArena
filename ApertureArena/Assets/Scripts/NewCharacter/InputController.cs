@@ -17,6 +17,8 @@ namespace CharacterController {
     private ThirdPersonCharacter character;
     private Transform cameraTransform;
     private Command moveAxis, buttonSpace, buttonControl, buttonShift;
+    private float lastHorz, lastVert;
+
 
     private void Start() {
       character = GetComponent<ThirdPersonCharacter>();
@@ -33,20 +35,19 @@ namespace CharacterController {
     }
 
     private void handleInput() {
-      float horz = Input.GetAxis("Horizontal");
-      float vert = Input.GetAxis("Vertical");
+      float horz = Input.GetAxisRaw("Horizontal");
+      float vert = Input.GetAxisRaw("Vertical");
 
-      //Debug.Log(horz + ", " + vert);
-      //check for inputs
-      if (horz != 0 || vert != 0) {
-        //Vector3 direction = new Vector3(horz, 0, vert);
-        moveAxis.Execute(character, cameraTransform, new Vector3(horz, 0, vert));
-      }
+      //These checks queue up actions such as jump or sprint, then call a move.
       if (Input.GetKey(KeyCode.LeftControl)) {
         buttonControl.Execute(character);
       }
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
+      moveAxis.Execute(character, cameraTransform, new Vector3(horz, 0, vert));
+
+      lastHorz = horz;
+      lastVert = vert;
     }
 
   }

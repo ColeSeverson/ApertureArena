@@ -43,6 +43,7 @@ namespace CharacterController
 		float m_TurnAmount;
 		float m_ForwardAmount;
 		float m_CapsuleHeight;
+		float c_CapsuleRadius;
 		const float k_Half = 0.5f;
 
 		bool m_Crouching;
@@ -58,6 +59,7 @@ namespace CharacterController
 			c_Mesh = GetComponentsInChildren<SkinnedMeshRenderer>()[0];
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
+			c_CapsuleRadius = m_Capsule.radius;
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
@@ -234,6 +236,7 @@ namespace CharacterController
 				Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
 
 				// we preserve the existing y part of the current velocity.
+
 				v.y = m_Rigidbody.velocity.y;
 				m_Rigidbody.velocity = v;
 			} else {
@@ -259,7 +262,10 @@ namespace CharacterController
 #endif
 			// 0.1f is a small offset to start the ray from inside the character
 			// it is also good to note that the transform position in the sample assets is at the base of the character
-			if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
+			if (Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
 			{
 				m_GroundNormal = hitInfo.normal;
 				m_IsGrounded = true;
