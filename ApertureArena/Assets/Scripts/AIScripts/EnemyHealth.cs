@@ -38,6 +38,7 @@ namespace EnemyInformation
 
         public void TakeDamage(int amount, Vector3 hitPoint)
         {
+          Debug.Log("Ouch");
             // If the enemy is dead...
             if (isDead)
                 // ... no need to take damage so exit the function.

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+  Written by Cole Severson
+  This is the script for firing the pistol. Everything is original except for the enemyhealth section
+*/
 namespace CharacterController {
   using EnemyInformation;
   public class Gun : Weapon

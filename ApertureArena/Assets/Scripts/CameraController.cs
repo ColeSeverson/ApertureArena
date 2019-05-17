@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+  Cole Severson
+  This class was written by Cole Severson with the help of several stack overflow articles about camera control in Unity
+*/
+
 public class CameraController : MonoBehaviour
 {
     public GameObject character;

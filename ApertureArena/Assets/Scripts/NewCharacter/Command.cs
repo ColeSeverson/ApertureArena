@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+* Cole Severson
+  Written to follow the command pattern.
+  Controls the character.
+*/
 namespace CharacterController {
   enum moveState
   {

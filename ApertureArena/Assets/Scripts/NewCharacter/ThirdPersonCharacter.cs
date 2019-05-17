@@ -1,6 +1,7 @@
 /*
- * This is the code included in unity essentials to animate the character
- * This will be removed for our alpha when our own movement system is implemented
+ * Cole Severson
+ * This code is based off of the UNity Essentials thirdpersoncharacter controller.
+ 	 Adapted to fit our needs for a character while keeping the animator controller code
  */
 
 using UnityEngine;
