@@ -30,7 +30,7 @@ public class AI : MonoBehaviour
 
     private void Update()
     {
-        //Move this stuff to states, that do different things 
+        //Move this stuff to states, that do different things
 
         if(isDead)
         {
@@ -41,13 +41,13 @@ public class AI : MonoBehaviour
             nav.SetDestination(player.position);
             anim.SetBool("isMoving", true);
         }
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collision!");
-        Debug.Log(other.gameObject.tag);
+        //Debug.Log("Collision!");
+        //Debug.Log(other.gameObject.tag);
         if (other.gameObject.tag == "Player")
         {
             anim.SetBool("isAttacking2", true);
@@ -91,12 +91,12 @@ public class AI : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("exit");
+        /*Debug.Log("exit");
         Debug.Log(other.name);
         anim.SetBool("isAttacking1", false);
         anim.SetBool("isAttacking2", false);
         anim.SetBool("isAttacking3", false);
-        anim.SetBool("isMoving", false);
+        anim.SetBool("isMoving", false);*/
     }
 
 

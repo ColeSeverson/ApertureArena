@@ -46,10 +46,13 @@ namespace CharacterController
 		float c_CapsuleRadius;
 		const float k_Half = 0.5f;
 
+		int c_Health;
+
 		bool m_Crouching;
 		bool m_IsGrounded;
 		bool c_Blinking;
 		bool c_Attacking;
+		bool c_Dying;
 
 
 		void Start()
@@ -64,6 +67,20 @@ namespace CharacterController
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
+
+			c_Health = 100;
+		}
+		void LateUpdate(){
+			if (c_Health <= 0) {
+				c_Dying = true;
+
+			}
+		}
+		void OnCollisionEnter(Collision col) {
+			if (col.gameObject.tag == "Spear") {
+				c_Health -= 40;
+				Debug.Log("Ouch");
+			}
 		}
 
 		IEnumerator IFrames(){
@@ -75,15 +92,17 @@ namespace CharacterController
 			c_Mesh.enabled = true;
 			c_Blinking = false;
 		}
+
 		public void Blink(){
 			//dissapear -> enable iFrames -> create particle effects -> move -> reeapear
 			Debug.Log("Blink");
 			StartCoroutine(IFrames());
 		}
+
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
 
-			if (c_Blinking || c_Attacking) {
+			if (c_Blinking || c_Attacking || c_Dying) {
 				UpdateAnimator(new Vector3(0, 0, 0));
 				return;
 			}
@@ -118,8 +137,8 @@ namespace CharacterController
 				HandleAirborneMovement(move);
 			}
 
-			ScaleCapsuleForCrouching(crouch);
-			PreventStandingInLowHeadroom();
+			//ScaleCapsuleForCrouching(crouch);
+			//PreventStandingInLowHeadroom();
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
@@ -277,7 +296,8 @@ namespace CharacterController
 			if (Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
 				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
 				Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
-				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
+				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
 			{
 				m_GroundNormal = hitInfo.normal;
 				m_IsGrounded = true;
