@@ -30,7 +30,7 @@ namespace CharacterController {
 
       moveAxis = new Move();
       buttonSpace = new Jump();
-      buttonControl = new Blink();
+      buttonControl = new Crouch();
       buttonShift = new Sprint();
       buttonLeftMouse = new Attack();
       buttonRightMouse = new ADS();
@@ -45,14 +45,13 @@ namespace CharacterController {
       float vert = Input.GetAxisRaw("Vertical");
 
       //These checks queue up actions such as jump or sprint, then call a move.
-      if (Input.GetKey(KeyCode.LeftControl)) {
-        buttonControl.Execute(character);
-      }
+
+
 
       if(Input.GetMouseButton(0))
         buttonLeftMouse.Execute(character, cameraTransform);
       //buttonLeftMouse.Execute(character, Input.GetMouseButton(0));
-
+      buttonControl.Execute(Input.GetKey(KeyCode.LeftControl));
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
       buttonRightMouse.Execute(Input.GetMouseButtonDown(1));

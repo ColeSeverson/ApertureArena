@@ -35,6 +35,7 @@ namespace CharacterController
 		Animator m_Animator;
 		CapsuleCollider m_Capsule;
 		SkinnedMeshRenderer c_Mesh;
+		ParticleSystem c_Particles;
 
 		Vector3 c_CurrentMove;
 		Vector3 m_GroundNormal;
@@ -65,6 +66,8 @@ namespace CharacterController
 			m_Capsule = GetComponent<CapsuleCollider>();
 			c_Mesh = GetComponentsInChildren<SkinnedMeshRenderer>()[0];
 			c_Weapon = GetComponentsInChildren<Weapon>()[0];
+			c_Particles = GetComponent<ParticleSystem>();
+			c_Particles.Stop();
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
 			c_CapsuleRadius = m_Capsule.radius;
@@ -77,7 +80,8 @@ namespace CharacterController
 		void LateUpdate(){
 			if (c_Health <= 0) {
 				c_Dying = true;
-
+				c_Particles.Play();
+				c_Particles.Emit(100);
 			}
 		}
 		void OnTriggerEnter(Collider col) {
@@ -140,8 +144,8 @@ namespace CharacterController
 				HandleAirborneMovement(move);
 			}
 
-			//ScaleCapsuleForCrouching(crouch);
-			//PreventStandingInLowHeadroom();
+			ScaleCapsuleForCrouching(crouch);
+			PreventStandingInLowHeadroom();
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
@@ -179,6 +183,7 @@ namespace CharacterController
 			if (m_IsGrounded && crouch)
 			{
 				if (m_Crouching) return;
+				//Debug.Log("Trying");
 				m_Capsule.height = m_Capsule.height / 2f;
 				m_Capsule.center = m_Capsule.center / 2f;
 				m_Crouching = true;
