@@ -10,6 +10,7 @@ namespace CharacterController {
   using EnemyInformation;
   public class Gun : Weapon
   {
+    int timer;
     public Camera mainCamera;
     private Ray cameraRay;
     private Ray gunRay;
@@ -22,9 +23,14 @@ namespace CharacterController {
       yield return new WaitForSeconds(.2f);
       gunLine.enabled = false;
     }
-    public override void Execute(){
-      Debug.Log("Gun Weapon");
-
+    private void cooldown(){
+      if (timer > 0)
+        timer = timer - 1;
+       return;
+    }
+    IEnumerator fire(){
+      timer = 2;
+      yield return new WaitForSeconds(.3f);
       cameraRay.origin = mainCamera.transform.position;
       cameraRay.direction = mainCamera.transform.forward;
       RaycastHit hit;
@@ -52,8 +58,13 @@ namespace CharacterController {
       gunLine.enabled = true;
       //wait like .2f and remove gunLine
       StartCoroutine(gunLineTimer());
-
-
+    }
+    public override void Execute(){
+      Debug.Log("Gun Weapon");
+      if(timer == 0){
+        StartCoroutine(fire());
+        InvokeRepeating("cooldown", 0f, 1f);
+      }
     }
   }
 }
