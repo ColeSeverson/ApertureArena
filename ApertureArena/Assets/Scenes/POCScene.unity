@@ -2506,6 +2506,11 @@ PrefabInstance:
       propertyPath: deathText
       value: 
       objectReference: {fileID: 811287773}
+    - target: {fileID: 3495333824268578503, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: m_GravityMultiplier
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9579096, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
       propertyPath: m_Avatar
       value: 
@@ -4047,7 +4052,7 @@ GameObject:
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
