@@ -46,7 +46,7 @@ namespace CharacterController {
       Vector3 move = dir.z * cameraAngle + dir.x * cameraTransform.right;
 
     //  Debug.Log(move.ToString());
-      move = sprint ? move.normalized : move.normalized * 0.5f;
+      move = sprint ? move.normalized * 0.5f : move.normalized;
 
 
       character.Move(move, crouch, jump);
@@ -72,7 +72,7 @@ namespace CharacterController {
     //really should call something like character.jump();
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
     public override void Execute(bool crouching){
-    //  Debug.Log("Command-Crouch");
+      Debug.Log("Command-Crouch");
       crouch = crouching;
     }
   }

@@ -141,8 +141,8 @@ namespace CharacterController
 				HandleAirborneMovement(move);
 			}
 
-			//ScaleCapsuleForCrouching(crouch);
-			//PreventStandingInLowHeadroom();
+			ScaleCapsuleForCrouching(crouch);
+			PreventStandingInLowHeadroom();
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
@@ -180,6 +180,7 @@ namespace CharacterController
 			if (m_IsGrounded && crouch)
 			{
 				if (m_Crouching) return;
+				//Debug.Log("Trying");
 				m_Capsule.height = m_Capsule.height / 2f;
 				m_Capsule.center = m_Capsule.center / 2f;
 				m_Crouching = true;
