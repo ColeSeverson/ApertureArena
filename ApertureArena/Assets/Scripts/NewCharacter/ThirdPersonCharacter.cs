@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 namespace CharacterController
 {
@@ -28,6 +29,7 @@ namespace CharacterController
 		//serialized fields for added code
 		[SerializeField] float c_BlinkDistance = .25f;
 		[SerializeField] float c_IFrameDuration = 1f;
+		public Text deathText;
 
 
 		//componenets included in the Avatar
@@ -82,6 +84,8 @@ namespace CharacterController
 				c_Dying = true;
 				c_Particles.Play();
 				c_Particles.Emit(100);
+				deathText.text = "You have died.";
+				StartCoroutine(Dying());
 			}
 		}
 		void OnTriggerEnter(Collider col) {
@@ -89,8 +93,12 @@ namespace CharacterController
 				c_Health -= 40;
 			}
 		}
-
-		IEnumerator IFrames(){
+		IEnumerator Dying() {
+			yield return new WaitForSeconds(.2f);
+			c_Mesh.enabled = false;
+			c_Weapon.Destroy();
+		}
+		/*IEnumerator IFrames(){
 			c_Mesh.enabled = false;
 			c_Blinking = true;
 			yield return new WaitForSeconds(c_IFrameDuration);
@@ -104,7 +112,7 @@ namespace CharacterController
 			//dissapear -> enable iFrames -> create particle effects -> move -> reeapear
 			Debug.Log("Blink");
 			StartCoroutine(IFrames());
-		}
+		}*/
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
@@ -114,6 +122,7 @@ namespace CharacterController
 				return;
 			}
 
+		//	Debug.Log(move.ToString());
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
 			// direction.
@@ -131,7 +140,7 @@ namespace CharacterController
 			//Get the amount we will need to turn and the forward amount
 			m_TurnAmount = Mathf.Atan2(move.x, move.z);
 			m_ForwardAmount = move.z;
-			transform.Rotate(0, m_TurnAmount * 9999 * Time.deltaTime, 0);
+			transform.Rotate(0, m_TurnAmount * 1000 * Time.deltaTime, 0);
 
 
 			// control and velocity handling is different when grounded and airborne:
@@ -260,6 +269,7 @@ namespace CharacterController
 				c_Attacking = false;
 		}
 		public void Attack(bool attack, Transform cameraAngle){
+			if(c_Dying) return;
 			if(m_Animator.GetBool("OnGround")){
 				m_Animator.SetBool("Attacking", attack);
 				c_Attacking = attack;

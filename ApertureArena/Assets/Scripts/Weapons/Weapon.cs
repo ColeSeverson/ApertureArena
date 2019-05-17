@@ -12,5 +12,8 @@ namespace CharacterController {
     public virtual void Execute(){
       Debug.Log("Default Execute");
     }
+    public void Destroy(){
+      Destroy(gameObject);
+    }
   }
 }
