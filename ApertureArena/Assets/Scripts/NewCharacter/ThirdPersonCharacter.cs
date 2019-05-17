@@ -60,7 +60,7 @@ namespace CharacterController
 		bool c_Attacking;
 		bool c_Dying;
 
-
+		//Code to set up the private variables
 		void Start()
 		{
 			m_Animator = GetComponent<Animator>();
@@ -79,6 +79,7 @@ namespace CharacterController
 
 			c_Health = 100;
 		}
+		//LateUpdate just checks for dying
 		void LateUpdate(){
 			if (c_Health <= 0) {
 				c_Dying = true;
@@ -113,7 +114,8 @@ namespace CharacterController
 			Debug.Log("Blink");
 			StartCoroutine(IFrames());
 		}*/
-
+		//This move code is based off of the ThirdPersonCharacter Unity essential asset
+		//Used to cause movement instead of checking every frame
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
 
@@ -153,6 +155,7 @@ namespace CharacterController
 				HandleAirborneMovement(move);
 			}
 
+			//This code causes a crouch or leeps you crouched if you are already and under something
 			ScaleCapsuleForCrouching(crouch);
 			PreventStandingInLowHeadroom();
 
@@ -173,7 +176,7 @@ namespace CharacterController
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
 		}
 
-
+		//Just checks for jumping, actual movement is tied to the animation
 		void HandleGroundedMovement(bool crouch, bool jump)
 		{
 			// check whether conditions are right to allow a jump:
@@ -187,6 +190,7 @@ namespace CharacterController
 			}
 		}
 
+		//This code is purely from essential assets
 		void ScaleCapsuleForCrouching(bool crouch)
 		{
 			if (m_IsGrounded && crouch)
@@ -263,6 +267,8 @@ namespace CharacterController
 				m_Animator.speed = 1;
 			}
 		}
+
+		//Causes an attack using the current weapons
 		IEnumerator Attacking(){
 				yield return new WaitForSeconds(.3f);
 				m_Animator.SetBool("Attacking", false);
@@ -282,6 +288,8 @@ namespace CharacterController
 
 			}
 		}
+
+		//This is the code that causes motion based off of the animations
 		public void OnAnimatorMove()
 		{
 			// we implement this function to override the default root motion.

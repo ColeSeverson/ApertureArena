@@ -15,10 +15,14 @@ namespace CharacterController {
     private Ray cameraRay;
     private Ray gunRay;
     private LineRenderer gunLine;
+
+    //Start initializes the LineRenderer
     void Start(){
       gunLine = GetComponent<LineRenderer>();
       gunLine.enabled = false;
     }
+
+    //GunLineTimer removes the line
     IEnumerator gunLineTimer(){
       yield return new WaitForSeconds(.2f);
       gunLine.enabled = false;
@@ -28,6 +32,8 @@ namespace CharacterController {
         timer = timer - 1;
        return;
     }
+
+    //Fire is the main code. It waits to wait for the animation. THen it traces a ray from the camera to calculate the angle that the gun should shoot
     IEnumerator fire(){
       timer = 2;
       yield return new WaitForSeconds(.3f);
@@ -35,10 +41,8 @@ namespace CharacterController {
       cameraRay.direction = mainCamera.transform.forward;
       RaycastHit hit;
 
-      //Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 100f, Color.green, 1000f, false);
+      //if the camera ray hits do the gun firing logic and enemy hit logic, otherwise fire a ray into infinity
       if(Physics.Raycast (cameraRay, out hit, Mathf.Infinity)){//the camera hits something
-          //Debug.Log("Hit");
-          //Debug.DrawRay(transform.position, (hit.point - transform.position) * hit.distance, Color.yellow, 1000f, false);
           gunRay.origin = transform.position;
           gunRay.direction = hit.point - transform.position;
           RaycastHit gunHit;
@@ -59,6 +63,8 @@ namespace CharacterController {
       //wait like .2f and remove gunLine
       StartCoroutine(gunLineTimer());
     }
+
+    //Execute only if the gun is cooldown'ed
     public override void Execute(){
       Debug.Log("Gun Weapon");
       if(timer == 0){

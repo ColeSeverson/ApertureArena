@@ -23,7 +23,7 @@ namespace CharacterController {
     private Command moveAxis, buttonSpace, buttonControl, buttonShift, buttonLeftMouse, buttonRightMouse;
     private float lastHorz, lastVert;
 
-
+    //setup the buttons
     private void Start() {
       character = GetComponent<ThirdPersonCharacter>();
       cameraTransform = mainCamera.transform;
@@ -45,9 +45,6 @@ namespace CharacterController {
       float vert = Input.GetAxisRaw("Vertical");
 
       //These checks queue up actions such as jump or sprint, then call a move.
-
-
-
       if(Input.GetMouseButton(0))
         buttonLeftMouse.Execute(character, cameraTransform);
       //buttonLeftMouse.Execute(character, Input.GetMouseButton(0));
@@ -55,6 +52,7 @@ namespace CharacterController {
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
       buttonRightMouse.Execute(Input.GetMouseButtonDown(1));
+      
       moveAxis.Execute(character, cameraTransform, new Vector3(horz, 0, vert));
 
       lastHorz = horz;

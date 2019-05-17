@@ -36,19 +36,11 @@ namespace CharacterController {
   public class Move : Command
   {
     public override void Execute(ThirdPersonCharacter character, Transform cameraTransform, Vector3 dir) {
-      //bool jump = if charState == Jumping ? true : false;
-      //bool crouching = if charState == Crouching ? true : false;
-
-    //  Debug.Log("Command-Move");
-
-      //add Sprinting
       Vector3 cameraAngle = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
       Vector3 move = dir.z * cameraAngle + dir.x * cameraTransform.right;
 
-    //  Debug.Log(move.ToString());
+      //Handle 'walking'
       move = sprint ? move.normalized * 0.5f : move.normalized;
-
-
       character.Move(move, crouch, jump);
     }
   }
