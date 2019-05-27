@@ -17,10 +17,10 @@ namespace CharacterController
 	{
 
 		//Serialized fields inlcuded for the animations
-		[SerializeField] float m_MovingTurnSpeed = 360;
+		[SerializeField] float m_MovingTurnSpeed = 9999;
 		[SerializeField] float m_StationaryTurnSpeed = 180;
-		[SerializeField] float m_JumpPower = 12f;
-		[Range(1f, 4f)][SerializeField] float m_GravityMultiplier = 2f;
+		[SerializeField] float m_JumpPower = 15f;
+		[SerializeField] float m_GravityMultiplier = 1f;
 		[SerializeField] float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
@@ -59,6 +59,7 @@ namespace CharacterController
 		bool c_Blinking;
 		bool c_Attacking;
 		bool c_Dying;
+		bool c_Jumping;
 
 		//Code to set up the private variables
 		void Start()
@@ -78,6 +79,23 @@ namespace CharacterController
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
 			c_Health = 100;
+		}
+		void FixedUpdate(){
+			if (c_Jumping && !m_Crouching && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
+			{
+				// jump!
+				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
+				m_IsGrounded = false;
+				m_Animator.applyRootMotion = false;
+				m_GroundCheckDistance = 0.1f;
+			}
+			if(!m_IsGrounded) {
+				Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier * 200f) - Physics.gravity;
+				extraGravityForce *= Time.fixedDeltaTime;
+				m_Rigidbody.AddForce(extraGravityForce);
+
+				m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
+			}
 		}
 		//LateUpdate just checks for dying
 		void LateUpdate(){
@@ -118,7 +136,7 @@ namespace CharacterController
 		//Used to cause movement instead of checking every frame
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
-
+			c_Jumping = jump;
 			if (c_Blinking || c_Attacking || c_Dying) {
 				//UpdateAnimator(new Vector3(0, 0, 0));
 				return;
@@ -146,13 +164,9 @@ namespace CharacterController
 
 
 			// control and velocity handling is different when grounded and airborne:
-			if (m_IsGrounded)
+			if (!m_IsGrounded)
 			{
-				HandleGroundedMovement(crouch, jump);
-			}
-			else
-			{
-				HandleAirborneMovement(move);
+				//HandleAirborneMovement(move);
 			}
 
 			//This code causes a crouch or leeps you crouched if you are already and under something
@@ -174,20 +188,6 @@ namespace CharacterController
 			m_Rigidbody.AddForce(extraGravityForce);
 
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
-		}
-
-		//Just checks for jumping, actual movement is tied to the animation
-		void HandleGroundedMovement(bool crouch, bool jump)
-		{
-			// check whether conditions are right to allow a jump:
-			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
-			{
-				// jump!
-				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
-				m_IsGrounded = false;
-				m_Animator.applyRootMotion = false;
-				m_GroundCheckDistance = 0.1f;
-			}
 		}
 
 		//This code is purely from essential assets
