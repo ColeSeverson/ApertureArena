@@ -60,6 +60,7 @@ namespace CharacterController
 		bool c_Attacking;
 		bool c_Dying;
 		bool c_Jumping;
+		bool c_Rolling;
 
 		//Code to set up the private variables
 		void Start()
@@ -132,6 +133,19 @@ namespace CharacterController
 			Debug.Log("Blink");
 			StartCoroutine(IFrames());
 		}*/
+		IEnumerator Rolling(){
+			yield return new WaitForSeconds(.4f);
+			c_Rolling = false;
+		}
+		public void Roll(bool roll){
+			if(m_IsGrounded && !c_Attacking) {
+				m_Animator.SetBool("Rolling", roll);
+				if(roll) {
+					c_Rolling = true;
+					StartCoroutine(Rolling());
+				}
+			}
+		}
 		//This move code is based off of the ThirdPersonCharacter Unity essential asset
 		//Used to cause movement instead of checking every frame
 		public void Move(Vector3 move, bool crouch, bool jump)
@@ -170,7 +184,7 @@ namespace CharacterController
 			}
 
 			//This code causes a crouch or leeps you crouched if you are already and under something
-			ScaleCapsuleForCrouching(crouch);
+			ScaleCapsuleForCrouching(crouch || c_Rolling);
 			PreventStandingInLowHeadroom();
 
 			// send input and other state parameters to the animator

@@ -20,7 +20,7 @@ namespace CharacterController {
     //private ThirdPersonCameraController cameraController;
     private ThirdPersonCharacter character;
     private Transform cameraTransform;
-    private Command moveAxis, buttonSpace, buttonControl, buttonShift, buttonLeftMouse, buttonRightMouse;
+    private Command moveAxis, buttonSpace, buttonControl, buttonShift, buttonLeftMouse, buttonRightMouse, buttonC, buttonQ;
     private float lastHorz, lastVert;
 
     //setup the buttons
@@ -30,7 +30,8 @@ namespace CharacterController {
 
       moveAxis = new Move();
       buttonSpace = new Jump();
-      buttonControl = new Crouch();
+      buttonC = new Crouch();
+      buttonQ = new Roll();
       buttonShift = new Sprint();
       buttonLeftMouse = new Attack();
       buttonRightMouse = new ADS();
@@ -48,11 +49,13 @@ namespace CharacterController {
       if(Input.GetMouseButton(0))
         buttonLeftMouse.Execute(character, cameraTransform);
       //buttonLeftMouse.Execute(character, Input.GetMouseButton(0));
-      buttonControl.Execute(Input.GetKey(KeyCode.LeftControl));
+      //buttonControl.Execute(Input.GetKey(KeyCode.LeftControl));
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
       buttonRightMouse.Execute(Input.GetMouseButtonDown(1));
-      
+      buttonC.Execute(Input.GetKey(KeyCode.C));
+      buttonQ.Execute(character, Input.GetKeyDown(KeyCode.Q));
+
       moveAxis.Execute(character, cameraTransform, new Vector3(horz, 0, vert));
 
       lastHorz = horz;

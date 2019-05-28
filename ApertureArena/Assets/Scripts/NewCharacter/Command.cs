@@ -7,15 +7,6 @@ using UnityEngine;
   Controls the character.
 */
 namespace CharacterController {
-  enum moveState
-  {
-    Standing,
-    Airborn,
-    Dying,
-    Crouching,
-    Jumping,
-    Sprinting
-  }
 
   public abstract class Command
   {
@@ -44,10 +35,12 @@ namespace CharacterController {
       character.Move(move, crouch, jump);
     }
   }
-  public class Blink : Command
+  public class Roll : Command
   {
-    public override void Execute(ThirdPersonCharacter character) {
-      //character.Blink();
+    public override void Execute(ThirdPersonCharacter character, bool roll) {
+      if(roll)
+        Debug.Log("Roll");
+      character.Roll(roll);
     }
   }
   public class Jump : Command
@@ -64,7 +57,7 @@ namespace CharacterController {
     //really should call something like character.jump();
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
     public override void Execute(bool crouching){
-      Debug.Log("Command-Crouch");
+
       crouch = crouching;
     }
   }
