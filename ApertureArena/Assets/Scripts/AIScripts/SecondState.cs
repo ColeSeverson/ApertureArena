@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using AIStates;
 
+// Attacking State
 public class SecondState : State<AI>
 {
     private static SecondState _instance;
@@ -21,11 +22,15 @@ public class SecondState : State<AI>
         {
             if (_instance == null)
             {
-                new SecondState();
+                _instance = new SecondState();
             }
-
             return _instance;
         }
+    }
+
+    public void StateBehavior()
+    {
+
     }
 
     public override void EnterState(AI owner)
@@ -40,9 +45,6 @@ public class SecondState : State<AI>
 
     public override void UpdateState(AI owner)
     {
-        if (!owner.switchState)
-        {
-            owner.stateMachine.ChangeState(FirstState.Instance);
-        }
+
     }
 }
