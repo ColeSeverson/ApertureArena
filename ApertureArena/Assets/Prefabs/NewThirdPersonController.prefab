@@ -1654,16 +1654,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab40d5617fe35734db270e6f8adf72fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 360
+  m_MovingTurnSpeed: 9999
   m_StationaryTurnSpeed: 180
-  m_JumpPower: 12
-  m_GravityMultiplier: 2
+  m_JumpPower: 15
+  m_GravityMultiplier: 1
   m_RunCycleLegOffset: 0.2
   m_MoveSpeedMultiplier: 1
   m_AnimSpeedMultiplier: 1
   m_GroundCheckDistance: 0.1
   c_BlinkDistance: 0.25
   c_IFrameDuration: 1
+  deathText: {fileID: 0}
 --- !u!114 &8423547207863965272
 MonoBehaviour:
   m_ObjectHideFlags: 0

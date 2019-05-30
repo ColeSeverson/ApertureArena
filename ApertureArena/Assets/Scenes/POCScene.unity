@@ -297,7 +297,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7b1aae03684304a1aa1d4be10088ed79, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1050,7 +1050,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752599045}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 14069bf7272c1ec469e491d137e27ea4, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1707,11 +1707,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7791573725330087061, guid: 782bce00c4dab4e6c81d931a72960573,
-        type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
     - target: {fileID: 7791573725605962156, guid: 782bce00c4dab4e6c81d931a72960573,
         type: 3}
       propertyPath: m_Radius
@@ -1731,6 +1726,11 @@ PrefabInstance:
         type: 3}
       propertyPath: startHealth
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7791573725330087061, guid: 782bce00c4dab4e6c81d931a72960573,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7791573725330106881, guid: 782bce00c4dab4e6c81d931a72960573,
         type: 3}
@@ -2455,6 +2455,11 @@ PrefabInstance:
       propertyPath: m_Direction
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 13615390, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 14069bf7272c1ec469e491d137e27ea4,
+        type: 2}
     - target: {fileID: 4737774942629896174, guid: 3ec63d0f62ff36246b881c97b0c5693a,
         type: 3}
       propertyPath: m_RootOrder
@@ -4069,6 +4074,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3741657016631830926, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 800324fecd9f7b546a08dbdae0fbde7f, type: 2}
+    - target: {fileID: 3741657016631830926, guid: 3ec63d0f62ff36246b881c97b0c5693a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 800324fecd9f7b546a08dbdae0fbde7f, type: 2}
     m_RemovedComponents:
     - {fileID: 1323174096804134077, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3ec63d0f62ff36246b881c97b0c5693a, type: 3}

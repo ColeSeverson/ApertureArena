@@ -50,6 +50,7 @@ namespace CharacterController
 		float m_ForwardAmount;
 		float m_CapsuleHeight;
 		float c_CapsuleRadius;
+		float c_GroundCheckDistance = 0.1f;
 		const float k_Half = 0.5f;
 
 		int c_Health;
@@ -339,10 +340,10 @@ namespace CharacterController
 #endif
 			// 0.1f is a small offset to start the ray from inside the character
 			// it is also good to note that the transform position in the sample assets is at the base of the character
-			if (Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
-				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
-				Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
-				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+			if (Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius - c_GroundCheckDistance, 0, c_CapsuleRadius - c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius + c_GroundCheckDistance, 0, c_CapsuleRadius - c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius - c_GroundCheckDistance, 0, -c_CapsuleRadius + c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius + c_GroundCheckDistance, 0, -c_CapsuleRadius + c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
 				Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
 			{
 				m_GroundNormal = hitInfo.normal;
