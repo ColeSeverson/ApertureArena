@@ -37,10 +37,9 @@ namespace CharacterController {
   }
   public class Roll : Command
   {
-    public override void Execute(ThirdPersonCharacter character, bool roll) {
-      if(roll)
-        Debug.Log("Roll");
-      character.Roll(roll);
+    public override void Execute(ThirdPersonCharacter character) {
+      Debug.Log("Roll");
+      character.Roll();
     }
   }
   public class Jump : Command
@@ -78,7 +77,7 @@ namespace CharacterController {
       //Debug.Log("Command-Attack");
       character.Attack(character, t);
       if(!mouseLocked) {
-        
+
       }
     }
   }

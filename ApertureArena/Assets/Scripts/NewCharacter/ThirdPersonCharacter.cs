@@ -29,6 +29,8 @@ namespace CharacterController
 		//serialized fields for added code
 		[SerializeField] float c_BlinkDistance = .25f;
 		[SerializeField] float c_IFrameDuration = 1f;
+		[SerializeField] float c_RollDelay = 1f;
+		
 		public Text deathText;
 
 
@@ -55,6 +57,7 @@ namespace CharacterController
 
 		int c_Health;
 
+		bool c_RollCooldown;
 		bool m_Crouching;
 		bool m_IsGrounded;
 		bool c_Blinking;
@@ -137,14 +140,25 @@ namespace CharacterController
 		IEnumerator Rolling(){
 			yield return new WaitForSeconds(.4f);
 			c_Rolling = false;
+
+			yield return new WaitForSeconds(c_RollDelay - .4f);
+			c_RollCooldown = false;
 		}
-		public void Roll(bool roll){
-			if(m_IsGrounded && !c_Attacking) {
-				m_Animator.SetBool("Rolling", roll);
-				if(roll) {
+		/*IEnumerator RollCooldown(){
+			yield return new WaitForSeconds(1f);
+			c_RollCooldown = false;
+		}*/
+		public void Roll(){
+			if(m_IsGrounded && !c_Attacking && !c_RollCooldown) {
+					m_Animator.SetBool("Rolling", true);
+			//	if(roll) {
 					c_Rolling = true;
+					c_RollCooldown = true;
 					StartCoroutine(Rolling());
-				}
+					//StartCoroutine(RollCooldown());
+			//	}
+			}else {
+				m_Animator.SetBool("Rolling", false);
 			}
 		}
 		//This move code is based off of the ThirdPersonCharacter Unity essential asset

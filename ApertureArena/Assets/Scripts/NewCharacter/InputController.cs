@@ -64,7 +64,10 @@ namespace CharacterController {
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
       buttonRightMouse.Execute(Input.GetMouseButtonDown(1));
       buttonC.Execute(Input.GetKey(KeyCode.C));
-      buttonQ.Execute(character, Input.GetKeyDown(KeyCode.Q));
+    //  buttonQ.Execute(character, Input.GetKeyDown(KeyCode.Q));
+      if(Input.GetKey(KeyCode.Q)) {
+        buttonQ.Execute(character);
+      }
 
       moveAxis.Execute(character, cameraTransform, new Vector3(horz, 0, vert));
 
