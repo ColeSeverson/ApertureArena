@@ -39,7 +39,7 @@ namespace CharacterController {
       buttonLeftMouse = new Attack();
       buttonRightMouse = new ADS();
 
-
+      controller.LockMouse(true);
     }
 
     private void Update() {
