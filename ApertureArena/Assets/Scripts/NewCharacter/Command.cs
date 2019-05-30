@@ -11,7 +11,7 @@ namespace CharacterController {
   public abstract class Command
   {
     //temporary bools
-      protected static bool jump, crouch, sprint;
+      protected static bool jump, crouch, sprint, mouseLocked;
       private ThirdPersonCharacter character;
       //private ThirdPersonCameraController camera;
       //private Image crossHair;
@@ -77,6 +77,9 @@ namespace CharacterController {
     public override void Execute(ThirdPersonCharacter character, Transform t){
       //Debug.Log("Command-Attack");
       character.Attack(character, t);
+      if(!mouseLocked) {
+        
+      }
     }
   }
   public class ADS : Command

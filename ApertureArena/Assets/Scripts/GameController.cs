@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Application.targetFrameRate = 60;
-    }
+  private bool isMouseLocked;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+  public void LockMouse(bool toLock) {
+      if(toLock == isMouseLocked) {
+        return;
+      } else if (toLock == true){
+        isMouseLocked = true;
+        Cursor.lockState = CursorLockMode.Locked;
+      } else {
+        isMouseLocked = false;
+        Cursor.lockState = CursorLockMode.None;
+      }
+  }
 }

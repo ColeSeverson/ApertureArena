@@ -9,6 +9,7 @@ Written to follow the command pattern
 namespace CharacterController {
 
   [RequireComponent(typeof(ThirdPersonCharacter))]
+  [RequireComponent(typeof(GameController))]
   //[RequireComponent(typeof(ThirdPersonCameraController))]
   public class InputController : MonoBehaviour
   {
@@ -18,6 +19,7 @@ namespace CharacterController {
 
     //Private Vars
     //private ThirdPersonCameraController cameraController;
+    private GameController controller;
     private ThirdPersonCharacter character;
     private Transform cameraTransform;
     private Command moveAxis, buttonSpace, buttonControl, buttonShift, buttonLeftMouse, buttonRightMouse, buttonC, buttonQ;
@@ -26,6 +28,7 @@ namespace CharacterController {
     //setup the buttons
     private void Start() {
       character = GetComponent<ThirdPersonCharacter>();
+      controller = GetComponent<GameController>();
       cameraTransform = mainCamera.transform;
 
       moveAxis = new Move();
@@ -35,6 +38,8 @@ namespace CharacterController {
       buttonShift = new Sprint();
       buttonLeftMouse = new Attack();
       buttonRightMouse = new ADS();
+
+
     }
 
     private void Update() {
@@ -46,8 +51,13 @@ namespace CharacterController {
       float vert = Input.GetAxisRaw("Vertical");
 
       //These checks queue up actions such as jump or sprint, then call a move.
-      if(Input.GetMouseButton(0))
+      if(Input.GetMouseButton(0)) {
         buttonLeftMouse.Execute(character, cameraTransform);
+        controller.LockMouse(true);
+      }
+      if(Input.GetKeyDown(KeyCode.Escape)) {
+        controller.LockMouse(false);
+      }
       //buttonLeftMouse.Execute(character, Input.GetMouseButton(0));
       //buttonControl.Execute(Input.GetKey(KeyCode.LeftControl));
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
