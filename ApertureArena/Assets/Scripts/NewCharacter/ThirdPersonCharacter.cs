@@ -30,7 +30,7 @@ namespace CharacterController
 		[SerializeField] float c_BlinkDistance = .25f;
 		[SerializeField] float c_IFrameDuration = 1f;
 		[SerializeField] float c_RollDelay = 1f;
-		
+
 		public Text deathText;
 
 
@@ -40,6 +40,7 @@ namespace CharacterController
 		CapsuleCollider m_Capsule;
 		SkinnedMeshRenderer c_Mesh;
 		ParticleSystem c_Particles;
+	//	GameController c_Controller;
 
 		Vector3 c_CurrentMove;
 		Vector3 m_GroundNormal;
@@ -75,6 +76,8 @@ namespace CharacterController
 			c_Mesh = GetComponentsInChildren<SkinnedMeshRenderer>()[0];
 			c_Weapon = GetComponentsInChildren<Weapon>()[0];
 			c_Particles = GetComponent<ParticleSystem>();
+			//c_Controller = GetComponent<GameController>();
+
 			c_Particles.Stop();
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
@@ -104,11 +107,12 @@ namespace CharacterController
 		}
 		//LateUpdate just checks for dying
 		void LateUpdate(){
-			if (c_Health <= 0) {
+			if (c_Health <= 0 && c_Dying == false) {
 				c_Dying = true;
 				c_Particles.Play();
 				c_Particles.Emit(100);
 				deathText.text = "You have died.";
+				c_Weapon.Destroy();
 				StartCoroutine(Dying());
 			}
 		}
@@ -120,7 +124,9 @@ namespace CharacterController
 		IEnumerator Dying() {
 			yield return new WaitForSeconds(.2f);
 			c_Mesh.enabled = false;
-			c_Weapon.Destroy();
+		}
+		public bool isDead() {
+			return c_Dying;
 		}
 		/*IEnumerator IFrames(){
 			c_Mesh.enabled = false;

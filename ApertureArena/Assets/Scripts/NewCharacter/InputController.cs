@@ -51,9 +51,12 @@ namespace CharacterController {
       float vert = Input.GetAxisRaw("Vertical");
 
       //These checks queue up actions such as jump or sprint, then call a move.
-      if(Input.GetMouseButton(0)) {
+      if(Input.GetMouseButtonDown(0)) {
         buttonLeftMouse.Execute(character, cameraTransform);
         controller.LockMouse(true);
+        if(character.isDead()) {
+          controller.ReloadScene();
+        }
       }
       if(Input.GetKeyDown(KeyCode.Escape)) {
         controller.LockMouse(false);
