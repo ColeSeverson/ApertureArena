@@ -16,6 +16,7 @@ public class BulletHellAI : MonoBehaviour
     //float temp = 0;
 
     private Pattern[] patterns;
+    private GameObject bullet1;
 
     // Update is called once per frame
     void Start(){
@@ -29,9 +30,9 @@ public class BulletHellAI : MonoBehaviour
 
     }
     public void fire(Vector3 direction, float bS, float level = 0) {
-      bullet = Instantiate(bullet, bulletSpawnArea.position + (new Vector3(0, 1, 0) * level), new Quaternion(0, 0, 0, 0));
-      bullet.GetComponent<Rigidbody>().AddForce(direction * bS);
-      Destroy(bullet, 10f);
+      bullet1 = Instantiate(bullet, bulletSpawnArea.position + (new Vector3(0, 1, 0) * level), new Quaternion(0, 0, 0, 0));
+      bullet1.GetComponent<Rigidbody>().AddForce(direction * bS);
+      Destroy(bullet1, 10f);
     }
     public void Shoot()
     {
@@ -45,4 +46,6 @@ public class BulletHellAI : MonoBehaviour
             fireDelay -= Time.deltaTime;
         }
     }
+
+   
 }
