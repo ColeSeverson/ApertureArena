@@ -22,3 +22,16 @@ public class Nova : Pattern
       return pS * 1;
     }
 }
+public class Spray : Pattern
+{
+    public override float Execute(BulletHellAI ai, Vector3 forward, float bulletSpeed, float patternSpeed)
+    {
+        Quaternion rotation;
+        for (int i= 0; i<10; i++)
+        {
+            Vector3 direction = Quaternion.AngleAxis(6f * (i-5), Vector3.up) * forward;
+            ai.fire(direction, bulletSpeed);
+        }
+        return patternSpeed * 1;
+    }
+}

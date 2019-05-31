@@ -20,7 +20,8 @@ public class BulletHellAI : MonoBehaviour
     // Update is called once per frame
     void Start(){
       patterns = new Pattern[] {
-        new Nova()
+        new Nova(),
+        new Spray()
       };
     }
     void Update()
@@ -28,7 +29,7 @@ public class BulletHellAI : MonoBehaviour
 
     }
     public void fire(Vector3 direction, float bS) {
-      bullet = Instantiate(bullet, bulletSpawnArea.position, new Quaternion(90, 0, 0, 0));
+      bullet = Instantiate(bullet, bulletSpawnArea.position, new Quaternion(0, 0, 0, 0));
       bullet.GetComponent<Rigidbody>().AddForce(direction * bS);
       Destroy(bullet, 10f);
     }
