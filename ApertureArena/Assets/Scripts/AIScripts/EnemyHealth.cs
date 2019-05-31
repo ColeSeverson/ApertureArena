@@ -7,14 +7,13 @@ namespace EnemyInformation
     public class EnemyHealth : MonoBehaviour
     {
         public int startingHealth = 500;            // The amount of health the enemy starts the game with.
-        public int currentHealth;                   // The current health the enemy has.
+        int currentHealth;                   // The current health the enemy has.
         public AudioClip deathClip;                 // The sound to play when the enemy dies.
 
         Animator anim;                              // Reference to the animator.
         AudioSource enemyAudio;                     // Reference to the audio source.
         CapsuleCollider capsuleCollider;            // Reference to the capsule collider.
         bool isDead;                                // Whether the enemy is dead.
-
 
         void Awake()
         {
@@ -26,13 +25,6 @@ namespace EnemyInformation
             // Setting the current health when the enemy first spawns.
             currentHealth = startingHealth;
         }
-
-
-        void Update()
-        {
-
-        }
-
 
         public void TakeDamage(int amount, Vector3 hitPoint)
         {

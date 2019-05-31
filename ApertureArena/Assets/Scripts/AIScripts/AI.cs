@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using AIStates;
+//using AIStates;
 
 //This is a pretty simple driver for our AI, elements of it are fomr the Survival Shooter Unity Tutorial
 // Patrolling State Functionality
@@ -9,13 +9,14 @@ using AIStates;
 
 public class AI : MonoBehaviour
 {
-
     public float sightDistance = 50f;
     public int startHealth = 500;
     public int currHealth;
+    public bool _ranged = false;
     Transform player;
     UnityEngine.AI.NavMeshAgent nav;
     Animator anim;
+    BulletHellAI bh;
 
     [SerializeField]
     bool _patrolWaiting;
@@ -41,6 +42,7 @@ public class AI : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player").transform;
         }
         anim = GetComponent<Animator>();
+        bh = GetComponent<BulletHellAI>();
         currHealth = startHealth;
 
         if (nav == null)
@@ -84,7 +86,15 @@ public class AI : MonoBehaviour
         }
         else if (CanSeeEnemy() || _alerted)
         {
-            Alerted();
+            if (_ranged)
+            {
+                RangedAlerted();
+            }
+            else
+            {
+                MeleeAlerted();
+            }
+
         }
         else if (_travelling && nav.remainingDistance <= 1.0f)
         {
@@ -115,7 +125,30 @@ public class AI : MonoBehaviour
 
     }
 
-    private void Alerted()
+    private void RangedAlerted()
+    {
+        if (CanSeeEnemy())
+        {
+            // if you can see them shoot them.
+            transform.LookAt(player.position);
+            anim.SetBool("isMoving", false);
+            nav.speed = 0;
+            anim.SetTrigger("Attack");
+            bh.Shoot();
+
+        }
+        else
+        {
+            //if you cant see them move so that you'll be able to shoot them
+            nav.SetDestination(player.position);
+            nav.speed = 1;
+            anim.ResetTrigger("Attack");
+            anim.SetBool("isMoving", true);
+        }
+    }
+
+
+    private void MeleeAlerted()
     {
         if(Vector3.Distance(transform.position, player.position) < 1)
         {
@@ -137,7 +170,6 @@ public class AI : MonoBehaviour
     private void OnDeath()
     {
         anim.SetBool("isMoving", false);
-        anim.SetBool("isAttacking2", false);
         anim.ResetTrigger("Attack");
 
         if (!_sunk)
@@ -178,8 +210,6 @@ public class AI : MonoBehaviour
 
                 if (Physics.Raycast(this.transform.position + aiOffset, (player.transform.position + playerOffset) - this.transform.position, out RaycastHit hit))
                 {
-                    Debug.DrawRay(this.transform.position + aiOffset, (player.transform.position + playerOffset) - this.transform.position, Color.red);
-                    Debug.Log(hit.collider.tag);
 
                     if (hit.collider.tag == "Player")
                     {
