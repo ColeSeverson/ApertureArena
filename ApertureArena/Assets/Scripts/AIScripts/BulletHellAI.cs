@@ -28,8 +28,8 @@ public class BulletHellAI : MonoBehaviour
     {
 
     }
-    public void fire(Vector3 direction, float bS) {
-      bullet = Instantiate(bullet, bulletSpawnArea.position, new Quaternion(0, 0, 0, 0));
+    public void fire(Vector3 direction, float bS, float level = 0) {
+      bullet = Instantiate(bullet, bulletSpawnArea.position + (new Vector3(0, 1, 0) * level), new Quaternion(0, 0, 0, 0));
       bullet.GetComponent<Rigidbody>().AddForce(direction * bS);
       Destroy(bullet, 10f);
     }
