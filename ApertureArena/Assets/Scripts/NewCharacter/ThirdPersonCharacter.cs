@@ -323,7 +323,7 @@ namespace CharacterController
 		}
 		public void Attack(bool attack, Transform cameraAngle){
 			if(c_Dying) return;
-			if(m_Animator.GetBool("OnGround")){
+			if(m_Animator.GetBool("OnGround") && !m_Crouching){
 				m_Animator.SetBool("Attacking", attack);
 				c_Attacking = attack;
 				StartCoroutine(Attacking());
