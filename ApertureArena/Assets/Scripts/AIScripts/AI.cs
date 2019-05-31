@@ -150,7 +150,7 @@ public class AI : MonoBehaviour
 
     private void MeleeAlerted()
     {
-        if(Vector3.Distance(transform.position, player.position) < 1)
+        if(Vector3.Distance(transform.position, player.position) < 2)
         {
             anim.SetBool("isMoving", false);
             nav.speed = 0;
