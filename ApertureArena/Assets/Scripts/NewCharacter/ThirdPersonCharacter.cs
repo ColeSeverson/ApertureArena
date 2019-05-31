@@ -29,6 +29,8 @@ namespace CharacterController
 		//serialized fields for added code
 		[SerializeField] float c_BlinkDistance = .25f;
 		[SerializeField] float c_IFrameDuration = 1f;
+		[SerializeField] float c_RollDelay = 1f;
+
 		public Text deathText;
 
 
@@ -38,6 +40,7 @@ namespace CharacterController
 		CapsuleCollider m_Capsule;
 		SkinnedMeshRenderer c_Mesh;
 		ParticleSystem c_Particles;
+	//	GameController c_Controller;
 
 		Vector3 c_CurrentMove;
 		Vector3 m_GroundNormal;
@@ -50,10 +53,12 @@ namespace CharacterController
 		float m_ForwardAmount;
 		float m_CapsuleHeight;
 		float c_CapsuleRadius;
+		float c_GroundCheckDistance = 0.1f;
 		const float k_Half = 0.5f;
 
 		int c_Health;
 
+		bool c_RollCooldown;
 		bool m_Crouching;
 		bool m_IsGrounded;
 		bool c_Blinking;
@@ -71,6 +76,8 @@ namespace CharacterController
 			c_Mesh = GetComponentsInChildren<SkinnedMeshRenderer>()[0];
 			c_Weapon = GetComponentsInChildren<Weapon>()[0];
 			c_Particles = GetComponent<ParticleSystem>();
+			//c_Controller = GetComponent<GameController>();
+
 			c_Particles.Stop();
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
@@ -100,11 +107,12 @@ namespace CharacterController
 		}
 		//LateUpdate just checks for dying
 		void LateUpdate(){
-			if (c_Health <= 0) {
+			if (c_Health <= 0 && c_Dying == false) {
 				c_Dying = true;
 				c_Particles.Play();
 				c_Particles.Emit(100);
 				deathText.text = "You have died.";
+				c_Weapon.Destroy();
 				StartCoroutine(Dying());
 			}
 		}
@@ -116,7 +124,9 @@ namespace CharacterController
 		IEnumerator Dying() {
 			yield return new WaitForSeconds(.2f);
 			c_Mesh.enabled = false;
-			c_Weapon.Destroy();
+		}
+		public bool isDead() {
+			return c_Dying;
 		}
 		/*IEnumerator IFrames(){
 			c_Mesh.enabled = false;
@@ -136,14 +146,25 @@ namespace CharacterController
 		IEnumerator Rolling(){
 			yield return new WaitForSeconds(.4f);
 			c_Rolling = false;
+
+			yield return new WaitForSeconds(c_RollDelay - .4f);
+			c_RollCooldown = false;
 		}
-		public void Roll(bool roll){
-			if(m_IsGrounded && !c_Attacking) {
-				m_Animator.SetBool("Rolling", roll);
-				if(roll) {
+		/*IEnumerator RollCooldown(){
+			yield return new WaitForSeconds(1f);
+			c_RollCooldown = false;
+		}*/
+		public void Roll(){
+			if(m_IsGrounded && !c_Attacking && !c_RollCooldown) {
+					m_Animator.SetBool("Rolling", true);
+			//	if(roll) {
 					c_Rolling = true;
+					c_RollCooldown = true;
 					StartCoroutine(Rolling());
-				}
+					//StartCoroutine(RollCooldown());
+			//	}
+			}else {
+				m_Animator.SetBool("Rolling", false);
 			}
 		}
 		//This move code is based off of the ThirdPersonCharacter Unity essential asset
@@ -339,10 +360,10 @@ namespace CharacterController
 #endif
 			// 0.1f is a small offset to start the ray from inside the character
 			// it is also good to note that the transform position in the sample assets is at the base of the character
-			if (Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
-				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
-				Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
-				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius, 0, -c_CapsuleRadius) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+			if (Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius - c_GroundCheckDistance, 0, c_CapsuleRadius - c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius + c_GroundCheckDistance, 0, c_CapsuleRadius - c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(c_CapsuleRadius - c_GroundCheckDistance, 0, -c_CapsuleRadius + c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
+				Physics.Raycast(transform.position + new Vector3(-c_CapsuleRadius + c_GroundCheckDistance, 0, -c_CapsuleRadius + c_GroundCheckDistance) + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance) ||
 				Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
 			{
 				m_GroundNormal = hitInfo.normal;
