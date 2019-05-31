@@ -37,8 +37,8 @@ namespace CharacterController {
     IEnumerator fire(){
       timer = 2;
       yield return new WaitForSeconds(.3f);
-      cameraRay.origin = mainCamera.transform.position;
       cameraRay.direction = mainCamera.transform.forward;
+      cameraRay.origin = mainCamera.transform.position + cameraRay.direction * 1f;
       RaycastHit hit;
 
       //if the camera ray hits do the gun firing logic and enemy hit logic, otherwise fire a ray into infinity
