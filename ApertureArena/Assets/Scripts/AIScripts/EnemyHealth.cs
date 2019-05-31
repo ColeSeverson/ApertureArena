@@ -65,6 +65,7 @@ namespace EnemyInformation
 
             // Tell the animator that the enemy is dead.
             anim.SetBool("isDead", true);
+            Destroy(gameObject, 2f);
 
         }
     }
