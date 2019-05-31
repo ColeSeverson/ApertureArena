@@ -75,10 +75,7 @@ namespace CharacterController {
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
     public override void Execute(ThirdPersonCharacter character, Transform t){
       //Debug.Log("Command-Attack");
-      character.Attack(character, t);
-      if(!mouseLocked) {
-
-      }
+      character.Attack(t);
     }
   }
   public class ADS : Command

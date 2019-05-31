@@ -60,7 +60,8 @@ namespace CharacterController {
       }
       if(Input.GetKeyDown(KeyCode.Escape)) {
         controller.LockMouse(false);
-        if(character.isDead() || controller.isLocked()) {
+        //Debug.Log(controller.isLocked());
+        if(character.isDead() || !controller.isLocked()) {
           Application.Quit();
         }
       }

@@ -10,7 +10,7 @@ namespace CharacterController {
   using EnemyInformation;
   public class Gun : Weapon
   {
-    int timer;
+    bool cooldown;
     public Camera mainCamera;
     private Ray cameraRay;
     private Ray gunRay;
@@ -27,15 +27,13 @@ namespace CharacterController {
       yield return new WaitForSeconds(.2f);
       gunLine.enabled = false;
     }
-    private void cooldown(){
-      if (timer > 0)
-        timer = timer - 1;
-       return;
+    IEnumerator fireTime(){
+      yield return new WaitForSeconds(.4f);
+      cooldown = false;
     }
 
     //Fire is the main code. It waits to wait for the animation. THen it traces a ray from the camera to calculate the angle that the gun should shoot
     IEnumerator fire(){
-      timer = 2;
       yield return new WaitForSeconds(.3f);
       cameraRay.direction = mainCamera.transform.forward;
       cameraRay.origin = mainCamera.transform.position;
@@ -62,14 +60,15 @@ namespace CharacterController {
       gunLine.enabled = true;
       //wait like .2f and remove gunLine
       StartCoroutine(gunLineTimer());
+      StartCoroutine(fireTime());
     }
 
     //Execute only if the gun is cooldown'ed
     public override void Execute(){
       Debug.Log("Gun Weapon");
-      if(timer == 0){
+      if(cooldown == false){
+        cooldown = true;
         StartCoroutine(fire());
-        InvokeRepeating("cooldown", 0f, 1f);
       }
     }
   }

@@ -111,7 +111,7 @@ namespace CharacterController
 				c_Dying = true;
 				c_Particles.Play();
 				c_Particles.Emit(100);
-				deathText.text = "You have died.";
+				deathText.text = "Death";
 				c_Weapon.Destroy();
 				StartCoroutine(Dying());
 			}
@@ -121,9 +121,7 @@ namespace CharacterController
 			if(c_IFrame){
 				return;
 			}
-			if (col.gameObject.tag == "Spear") {
-				c_Health -= 0;
-			}else if (col.gameObject.tag == "Bullet") {
+			if (col.gameObject.tag == "Spear" || col.gameObject.tag == "Bullet") {
 				c_Health -= 1;
 				c_IFrame = true;
 				StartCoroutine(IFrames());
@@ -317,15 +315,15 @@ namespace CharacterController
 
 		//Causes an attack using the current weapons
 		IEnumerator Attacking(){
-				yield return new WaitForSeconds(.3f);
+				yield return new WaitForSeconds(.4f);
 				m_Animator.SetBool("Attacking", false);
 				c_Attacking = false;
 		}
-		public void Attack(bool attack, Transform cameraAngle){
-			if(c_Dying) return;
-			if(m_Animator.GetBool("OnGround") && !m_Crouching){
-				m_Animator.SetBool("Attacking", attack);
-				c_Attacking = attack;
+		public void Attack(Transform cameraAngle){
+			if(c_Dying || c_Attacking) return;
+			if(m_Animator.GetBool("OnGround") && !m_Crouching && !c_Attacking){
+				m_Animator.SetBool("Attacking", true);
+				c_Attacking = true;
 				StartCoroutine(Attacking());
 				//now we do all of our gun stuff!
 				//float timer = 0f;

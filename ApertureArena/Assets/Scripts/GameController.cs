@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
+using System;
 
 public class GameController : MonoBehaviour
 {
   private bool isMouseLocked;
-  private string[] scenePaths;
-  private int currentScene = 0;
+//  private string[] scenePaths;
+  //private int currentSceneNum = 0;
   private AssetBundle myAssets;
   private GameObject[] enemies;
+  Scene currentScene;
 
   void Start(){
-    scenePaths = new string[] {"Level1", "Level2", "Level3", "Level4", "Level5"};
+    //scenePaths = new string[] {"Level1", "Level2", "Level3", "Level4", "Level5"};
     enemies = GameObject.FindGameObjectsWithTag("Boss");
+    currentScene = SceneManager.GetActiveScene();
     StartCoroutine(checkForEnemies());
   }
 
@@ -36,18 +40,20 @@ public class GameController : MonoBehaviour
       } else if (toLock == true){
         isMouseLocked = true;
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
       } else {
         isMouseLocked = false;
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
       }
   }
 
   public void LoadNextScene(){
-    if (currentScene < 4){
-      currentScene++;
-      SceneManager.LoadScene(scenePaths[currentScene], LoadSceneMode.Single);
+    if (currentScene.buildIndex < 4){
+      //currentSceneNum++;
+      SceneManager.LoadScene(currentScene.buildIndex + 1);
       //SceneManager.UnloadSceneAsync(scenePaths[currentScene - 1]);
-    } {
+    } else {
       //quit the game
       Application.Quit();
     }
@@ -57,7 +63,6 @@ public class GameController : MonoBehaviour
   public void ReloadScene() {
     //Debug.Log("Reloading Scene");
     //SceneManager.LoadScene(scenePaths[currentScene], LoadSceneMode.Single);
-    Scene currentScene = SceneManager.GetActiveScene();
     SceneManager.LoadScene(currentScene.name);
   }
 }
