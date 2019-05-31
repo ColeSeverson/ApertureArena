@@ -4,13 +4,13 @@
 //This is a pretty simple driver for our AI, elements of it are fomr the Survival Shooter Unity Tutorial
 // Patrolling State Functionality
 // Much of this is from https://www.youtube.com/watch?v=8_zTQsYFwf0&t=4s
-// This is just a general tutorial on how to get an AI to patrol a given area, I used parts of this, but the overall 
+// This is just a general tutorial on how to get an AI to patrol a given area, I used parts of this, but the overall
 // implementation is my own
 
 public class AI : MonoBehaviour
 {
     public float sightDistance = 50f;
-    public int startHealth = 500;
+    public int startHealth = 10;
     public int currHealth;
     public bool _ranged = false;
     Transform player;
@@ -79,7 +79,7 @@ public class AI : MonoBehaviour
     }
 
     private void Update()
-    { 
+    {
         if (anim.GetBool("isDead"))
         {
             OnDeath();
@@ -166,7 +166,7 @@ public class AI : MonoBehaviour
         }
     }
 
-    // Destroys the game object and 
+    // Destroys the game object and
     private void OnDeath()
     {
         anim.SetBool("isMoving", false);

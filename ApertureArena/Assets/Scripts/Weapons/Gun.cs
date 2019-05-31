@@ -38,7 +38,7 @@ namespace CharacterController {
       timer = 2;
       yield return new WaitForSeconds(.3f);
       cameraRay.direction = mainCamera.transform.forward;
-      cameraRay.origin = mainCamera.transform.position + cameraRay.direction * 1f;
+      cameraRay.origin = mainCamera.transform.position;
       RaycastHit hit;
 
       //if the camera ray hits do the gun firing logic and enemy hit logic, otherwise fire a ray into infinity
@@ -49,7 +49,7 @@ namespace CharacterController {
           if(Physics.Raycast (gunRay, out gunHit, hit.distance * 2)) {
             EnemyHealth enemyHealth = hit.collider.GetComponent<EnemyHealth>();
             if(enemyHealth != null) {
-              enemyHealth.TakeDamage (100, hit.point);
+              enemyHealth.TakeDamage (1, hit.point);
             }
             gunLine.SetPosition (1, gunHit.point);
           } else {

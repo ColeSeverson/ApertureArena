@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
 //This code is taken from the Survival Shooter Unity tutorial, we did this project for our assignment 2 so the schema of this set up was familiar to me.
 
 namespace EnemyInformation
 {
     public class EnemyHealth : MonoBehaviour
     {
-        public int startingHealth = 500;            // The amount of health the enemy starts the game with.
-        int currentHealth;                   // The current health the enemy has.
+        public  int startingHealth = 10;            // The amount of health the enemy starts the game with.
+        private int currentHealth;                // The current health the enemy has.
         public AudioClip deathClip;                 // The sound to play when the enemy dies.
+        public RectTransform healthbar;
 
         Animator anim;                              // Reference to the animator.
         AudioSource enemyAudio;                     // Reference to the audio source.
         CapsuleCollider capsuleCollider;            // Reference to the capsule collider.
-        bool isDead;                                // Whether the enemy is dead.
+        bool isDead;
+        bool takingDamage;                             // Whether the enemy is dead.
 
         void Awake()
         {
@@ -25,12 +29,15 @@ namespace EnemyInformation
             // Setting the current health when the enemy first spawns.
             currentHealth = startingHealth;
         }
-
+        IEnumerator IFrames(){
+          yield return new WaitForSeconds(1f);
+          takingDamage = false;
+        }
         public void TakeDamage(int amount, Vector3 hitPoint)
         {
- 
+
             // If the enemy is dead...
-            if (isDead)
+            if (isDead || takingDamage)
                 // ... no need to take damage so exit the function.
                 return;
 
@@ -39,13 +46,15 @@ namespace EnemyInformation
 
             // Reduce the current health by the amount of damage sustained.
             currentHealth -= amount;
-
+            StartCoroutine(IFrames());
             // If the current health is less than or equal to zero...
             if (currentHealth <= 0)
             {
                 // using a function to be able to add functionality later and keep the logic contained
                 Death();
             }
+
+            healthbar.sizeDelta = new Vector2(currentHealth * (200 / startingHealth), healthbar.sizeDelta.y);
         }
 
 
