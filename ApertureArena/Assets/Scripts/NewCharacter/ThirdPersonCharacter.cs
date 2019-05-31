@@ -32,7 +32,7 @@ namespace CharacterController
 		[SerializeField] float c_RollDelay = 1f;
 
 		public Text deathText;
-
+		public Text livesText;
 
 		//componenets included in the Avatar
 		Rigidbody m_Rigidbody;
@@ -61,12 +61,12 @@ namespace CharacterController
 		bool c_RollCooldown;
 		bool m_Crouching;
 		bool m_IsGrounded;
-		bool c_Blinking;
+		//bool c_Blinking;
 		bool c_Attacking;
 		bool c_Dying;
 		bool c_Jumping;
 		bool c_Rolling;
-
+		bool c_IFrame;
 		//Code to set up the private variables
 		void Start()
 		{
@@ -86,7 +86,7 @@ namespace CharacterController
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
-			c_Health = 100;
+			c_Health = 3;
 		}
 		void FixedUpdate(){
 			if (c_Jumping && !m_Crouching && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
@@ -115,11 +115,23 @@ namespace CharacterController
 				c_Weapon.Destroy();
 				StartCoroutine(Dying());
 			}
+			livesText.text = "Lives: " + c_Health;
 		}
 		void OnTriggerEnter(Collider col) {
-			if (col.gameObject.tag == "Spear") {
-				c_Health -= 40;
+			if(c_IFrame){
+				return;
 			}
+			if (col.gameObject.tag == "Spear") {
+				c_Health -= 0;
+			}else if (col.gameObject.tag == "Bullet") {
+				c_Health -= 1;
+				c_IFrame = true;
+				StartCoroutine(IFrames());
+			}
+		}
+		IEnumerator IFrames() {
+				yield return new WaitForSeconds(c_IFrameDuration);
+				c_IFrame = false;
 		}
 		IEnumerator Dying() {
 			yield return new WaitForSeconds(.2f);
@@ -172,7 +184,7 @@ namespace CharacterController
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
 			c_Jumping = jump;
-			if (c_Blinking || c_Attacking || c_Dying) {
+			if (c_Attacking || c_Dying) {
 				//UpdateAnimator(new Vector3(0, 0, 0));
 				return;
 			}
