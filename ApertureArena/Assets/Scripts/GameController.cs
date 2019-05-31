@@ -12,7 +12,11 @@ public class GameController : MonoBehaviour
 
   void Start(){
     scenePaths = new string[] {"POCScene", "Level2", "Level3", "Level4", "Level5"};
-    
+
+  }
+
+  public bool isLocked(){
+    return isMouseLocked;
   }
 
   public void LockMouse(bool toLock) {
