@@ -24,7 +24,7 @@ public class Nova : Pattern
 }
 public class Spray : Pattern
 {
-    public override float Execute(BulletHellAI ai, Vector3 forward, float bulletSpeed, float patternSpeed)
+    public override float Execute(BulletHellAI ai, Vector3 forward, float bulletSpeed, float patternSpeed, float reps = 1)
     {
         Quaternion rotation;
         for (int i= 0; i<10; i++)
