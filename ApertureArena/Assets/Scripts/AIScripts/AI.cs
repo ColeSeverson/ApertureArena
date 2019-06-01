@@ -10,8 +10,8 @@
 public class AI : MonoBehaviour
 {
     public float sightDistance = 50f;
-    public int startHealth = 10;
-    public int currHealth;
+  //  public int startHealth = 10;
+  //  public int currHealth;
     public bool _ranged = false;
     Transform player;
     UnityEngine.AI.NavMeshAgent nav;
@@ -43,7 +43,7 @@ public class AI : MonoBehaviour
         }
         anim = GetComponent<Animator>();
         bh = GetComponent<BulletHellAI>();
-        currHealth = startHealth;
+      //  currHealth = startHealth;
 
         if (nav == null)
         {
@@ -125,7 +125,7 @@ public class AI : MonoBehaviour
 
     }
 
-    //When the ranged enemy is it does this and sprays bullets at the 
+    //When the ranged enemy is it does this and sprays bullets at the
     private void RangedAlerted()
     {
         if (CanSeeEnemy())

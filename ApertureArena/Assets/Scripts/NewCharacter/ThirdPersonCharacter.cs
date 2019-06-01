@@ -40,13 +40,11 @@ namespace CharacterController
 		CapsuleCollider m_Capsule;
 		SkinnedMeshRenderer c_Mesh;
 		ParticleSystem c_Particles;
-	//	GameController c_Controller;
 
 		Vector3 c_CurrentMove;
 		Vector3 m_GroundNormal;
 		Vector3 m_CapsuleCenter;
 		Weapon c_Weapon;
-
 
 		float m_OrigGroundCheckDistance;
 		float m_TurnAmount;
@@ -86,8 +84,11 @@ namespace CharacterController
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
+			//Health is set low so that dodging is important
 			c_Health = 3;
 		}
+
+		//All of the movement physics that was in Move() has been moved here. Otherwise the movement was frame dependant
 		void FixedUpdate(){
 			if (c_Jumping && !m_Crouching && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
 			{
@@ -98,6 +99,7 @@ namespace CharacterController
 				m_GroundCheckDistance = 0.1f;
 			}
 			if(!m_IsGrounded) {
+				//Ariel movement here
 				Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier * 200f) - Physics.gravity;
 				extraGravityForce *= Time.fixedDeltaTime;
 				m_Rigidbody.AddForce(extraGravityForce);
@@ -105,7 +107,7 @@ namespace CharacterController
 				m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
 			}
 		}
-		//LateUpdate just checks for dying
+		//LateUpdate just checks for dying, in LateUpdate to account for collisions on the same frame
 		void LateUpdate(){
 			if (c_Health <= 0 && c_Dying == false) {
 				c_Dying = true;
@@ -117,6 +119,8 @@ namespace CharacterController
 			}
 			livesText.text = "Lives: " + c_Health;
 		}
+
+		//This method is for registering damage. Or other trigger collisions but we don't have any others yet
 		void OnTriggerEnter(Collider col) {
 			if(c_IFrame){
 				return;
@@ -127,6 +131,7 @@ namespace CharacterController
 				StartCoroutine(IFrames());
 			}
 		}
+		//Helper routines for timing
 		IEnumerator IFrames() {
 				yield return new WaitForSeconds(c_IFrameDuration);
 				c_IFrame = false;
@@ -138,21 +143,6 @@ namespace CharacterController
 		public bool isDead() {
 			return c_Dying;
 		}
-		/*IEnumerator IFrames(){
-			c_Mesh.enabled = false;
-			c_Blinking = true;
-			yield return new WaitForSeconds(c_IFrameDuration);
-			//transform.position = transform.position + (c_CurrentMove.normalized * c_BlinkDistance);
-			//transform.position = transform.position + new Vector3(0f, 1f, 0f);
-			c_Mesh.enabled = true;
-			c_Blinking = false;
-		}
-
-		public void Blink(){
-			//dissapear -> enable iFrames -> create particle effects -> move -> reeapear
-			Debug.Log("Blink");
-			StartCoroutine(IFrames());
-		}*/
 		IEnumerator Rolling(){
 			yield return new WaitForSeconds(.4f);
 			c_Rolling = false;
@@ -160,25 +150,21 @@ namespace CharacterController
 			yield return new WaitForSeconds(c_RollDelay - .4f);
 			c_RollCooldown = false;
 		}
-		/*IEnumerator RollCooldown(){
-			yield return new WaitForSeconds(1f);
-			c_RollCooldown = false;
-		}*/
+
+		//Method that causes rolling
 		public void Roll(){
 			if(m_IsGrounded && !c_Attacking && !c_RollCooldown) {
 					m_Animator.SetBool("Rolling", true);
-			//	if(roll) {
 					c_Rolling = true;
 					c_RollCooldown = true;
 					StartCoroutine(Rolling());
-					//StartCoroutine(RollCooldown());
-			//	}
 			}else {
 				m_Animator.SetBool("Rolling", false);
 			}
 		}
+
 		//This move code is based off of the ThirdPersonCharacter Unity essential asset
-		//Used to cause movement instead of checking every frame
+		//The meat of this function has been moved to the FixedUpdate to account for the frame dependancy, running is actually based off of the animator so it isn't here either
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
 			c_Jumping = jump;
@@ -187,10 +173,7 @@ namespace CharacterController
 				return;
 			}
 
-		//	Debug.Log(move.ToString());
-			// convert the world relative moveInput vector into a local-relative
-			// turn amount and forward amount required to head in the desired
-			// direction.
+			//This stops strafe running from being inherantly faster
 			if (move.magnitude > 1f)
 				move.Normalize();
 
@@ -207,13 +190,6 @@ namespace CharacterController
 			m_ForwardAmount = move.z;
 			transform.Rotate(0, m_TurnAmount * 1000 * Time.deltaTime, 0);
 
-
-			// control and velocity handling is different when grounded and airborne:
-			if (!m_IsGrounded)
-			{
-				//HandleAirborneMovement(move);
-			}
-
 			//This code causes a crouch or leeps you crouched if you are already and under something
 			ScaleCapsuleForCrouching(crouch || c_Rolling);
 			PreventStandingInLowHeadroom();
@@ -224,10 +200,6 @@ namespace CharacterController
 
 		void HandleAirborneMovement(Vector3 move)
 		{
-			//Allow airborne movement
-		//	Vector3 airMove = new Vector3(move.x*6f, m_Rigidbody.velocity.y, move.z*6f);
-		//	m_Rigidbody.velocity = Vector3.Lerp(m_Rigidbody.velocity, airMove, Time.deltaTime*2f);
-
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
 			m_Rigidbody.AddForce(extraGravityForce);
@@ -235,19 +207,19 @@ namespace CharacterController
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
 		}
 
-		//This code is purely from essential assets
+		//This code is mostly from the essential assets, scales the hitbox for crouching, or keeps the player crouching if they are under something their height
 		void ScaleCapsuleForCrouching(bool crouch)
 		{
 			if (m_IsGrounded && crouch)
 			{
 				if (m_Crouching) return;
-				//Debug.Log("Trying");
 				m_Capsule.height = m_Capsule.height / 2f;
 				m_Capsule.center = m_Capsule.center / 2f;
 				m_Crouching = true;
 			}
 			else
 			{
+				//This code here is fundamentally the same as PreventStandingInLowHeadroom, however it has to account for the standing up path of the method
 				Ray crouchRay = new Ray(m_Rigidbody.position + Vector3.up * m_Capsule.radius * k_Half, Vector3.up);
 				float crouchRayLength = m_CapsuleHeight - m_Capsule.radius * k_Half;
 				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
@@ -360,7 +332,7 @@ namespace CharacterController
 			}
 		}
 
-
+		//Raycasts to see if we are standing on the ground or not. Better than onCollision, because 
 		void CheckGroundStatus()
 		{
 			RaycastHit hitInfo;

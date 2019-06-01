@@ -1757,7 +1757,7 @@ PrefabInstance:
     - target: {fileID: 7791573725605962160, guid: 782bce00c4dab4e6c81d931a72960573,
         type: 3}
       propertyPath: startingHealth
-      value: 100
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7791573725605962163, guid: 782bce00c4dab4e6c81d931a72960573,
         type: 3}

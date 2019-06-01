@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using System;
 
+/*
+  * Writen by Cole Severson
+*/
+
+//object that controls the scene changes in the game
 public class GameController : MonoBehaviour
 {
   private bool isMouseLocked;
@@ -30,6 +35,7 @@ public class GameController : MonoBehaviour
     LoadNextScene();
   }
 
+  //controls the mouse locking
   public bool isLocked(){
     return isMouseLocked;
   }
@@ -48,6 +54,7 @@ public class GameController : MonoBehaviour
       }
   }
 
+  //controls scene loading
   public void LoadNextScene(){
     if (currentScene.buildIndex < 4){
       //currentSceneNum++;

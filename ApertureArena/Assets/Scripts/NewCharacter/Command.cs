@@ -24,6 +24,7 @@ namespace CharacterController {
       public virtual void Execute(){}
   }
 
+  //Move function that calulates angle of movement based off of camera angle.
   public class Move : Command
   {
     public override void Execute(ThirdPersonCharacter character, Transform cameraTransform, Vector3 dir) {
@@ -35,6 +36,8 @@ namespace CharacterController {
       character.Move(move, crouch, jump);
     }
   }
+
+  //All of the following are for other actions
   public class Roll : Command
   {
     public override void Execute(ThirdPersonCharacter character) {
@@ -78,13 +81,13 @@ namespace CharacterController {
       character.Attack(t);
     }
   }
+
+  //currently not implemented
   public class ADS : Command
   {
     //really should call something like character.jump();
     //This doesn't work because the default ThirdPersonCharacter uses move for jumping as well
     public override void Execute(bool aiming){
-      //Debug.Log("Command-ADS");
-      //sprint = sprinting;
     }
   }
 }

@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+* Base class written by Cole Severson.
+*/
+
+//an abstract class that causes the ranged ai to fire patterns. Implementation of Subclass Sandbox
 public abstract class Pattern : MonoBehaviour
 {
     public abstract float Execute(BulletHellAI ai, Vector3 forward, float bulletSpeed, float patternSpeed, float repetitions = 1);
@@ -17,7 +22,7 @@ public class Nova : Pattern
 {
     //This pattern loops once so pS doesn't effect it
     public override float Execute(BulletHellAI ai, Vector3 forward,  float bS, float pS, float reps = 1) {
-      int level = ShotLevel(); // randomly determine the shot level 
+      int level = ShotLevel(); // randomly determine the shot level
       for (int i = 0; i < 16; i++) {
 
         Vector3 direction = Quaternion.AngleAxis(22.5f * i, Vector3.up) * forward;
