@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletHellAI : MonoBehaviour
 {
+    // This class creates a "bullet hell" like Ai shooting scheme. Basically it'll just fire tons of shots 
     public Transform parent;
     public GameObject bullet;
     public Transform bulletSpawnArea; // an empty on the weapon
@@ -18,7 +19,6 @@ public class BulletHellAI : MonoBehaviour
     private Pattern[] patterns;
     private GameObject bullet1;
 
-    // Update is called once per frame
     void Start(){
       patterns = new Pattern[] {
         new Nova(),

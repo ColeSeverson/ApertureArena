@@ -125,6 +125,7 @@ public class AI : MonoBehaviour
 
     }
 
+    //When the ranged enemy is it does this and sprays bullets at the 
     private void RangedAlerted()
     {
         if (CanSeeEnemy())
@@ -132,7 +133,7 @@ public class AI : MonoBehaviour
             // if you can see them shoot them.
             transform.LookAt(player.position);
             anim.SetBool("isMoving", false);
-            nav.speed = 0;
+            //nav.speed = 0;
             anim.SetTrigger("Attack");
             bh.Shoot();
 
@@ -141,32 +142,32 @@ public class AI : MonoBehaviour
         {
             //if you cant see them move so that you'll be able to shoot them
             nav.SetDestination(player.position);
-            nav.speed = 1;
+            //nav.speed = 1;
             anim.ResetTrigger("Attack");
             anim.SetBool("isMoving", true);
         }
     }
 
-
+    // This is what the melee character will do when he is alerted to the position of the player
     private void MeleeAlerted()
     {
         if(Vector3.Distance(transform.position, player.position) < 2)
         {
             anim.SetBool("isMoving", false);
-            nav.speed = 0;
+            //nav.speed = 0;
             anim.SetTrigger("Attack");
         }
         else
         {
             nav.SetDestination(player.position);
             anim.ResetTrigger("Attack");
-            nav.speed = 2;
+            //nav.speed = 2;
             anim.SetBool("isMoving", true);
 
         }
     }
 
-    // Destroys the game object and
+    // Destroys the game object and disable the nav mesh as well as plays the death animation
     private void OnDeath()
     {
         anim.SetBool("isMoving", false);
@@ -182,6 +183,7 @@ public class AI : MonoBehaviour
         Destroy(gameObject, 2f);
     }
 
+    // Used during patrolling, set the AI to roam around the waypoints on the map
     private void SetDestination()
     {
         if (_waypointsVisited > 0)
@@ -199,6 +201,7 @@ public class AI : MonoBehaviour
 
     }
 
+    //Checks if the AI can see the player using raycasting and vector math.
     private bool CanSeeEnemy()
     {
         if (Vector3.Distance(player.position, this.transform.position) <= sightDistance)

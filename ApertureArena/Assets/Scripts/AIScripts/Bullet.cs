@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//This script exists so that the bullets created during the AI shooting will get despawned.
 public class Bullet : MonoBehaviour
 {
     private bool timer;

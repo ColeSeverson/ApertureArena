@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ConnectWaypoints : MonoBehaviour
 {
+    //Much of this is from https://www.youtube.com/watch?v=8_zTQsYFwf0&t=4s
     [SerializeField]
     protected float _connectivityRadius = 10f;
 
@@ -33,6 +34,7 @@ public class ConnectWaypoints : MonoBehaviour
 
     public void OnDrawGizmos()
     {
+        //Draws Boundary Stuff for the Waypoints so its actully visible
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, debugDrawRadius);
 
@@ -43,6 +45,7 @@ public class ConnectWaypoints : MonoBehaviour
 
     public ConnectWaypoints NextWaypoint(ConnectWaypoints previousWaypoint)
     {
+        //Locates the next waypoint if there is one, logs and error if there isnt
         if(_connections.Count == 0)
         {
             Debug.LogError("Insufficient Waypoints");
