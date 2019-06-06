@@ -12,16 +12,28 @@ namespace CharacterController {
   {
     bool cooldown;
     public Camera mainCamera;
+    public AudioClip[] zaps;
+
+    private AudioSource source;
     private Ray cameraRay;
     private Ray gunRay;
     private LineRenderer gunLine;
+
+
+
+
+
 
     //Start initializes the LineRenderer
     void Start(){
       gunLine = GetComponent<LineRenderer>();
       gunLine.enabled = false;
+      source = GetComponent<AudioSource>();
     }
-
+    void Zap(){
+      source.clip = zaps[Random.Range(0, zaps.Length)];
+      source.Play();
+    }
     //GunLineTimer removes the line
     IEnumerator gunLineTimer(){
       yield return new WaitForSeconds(.2f);
@@ -35,6 +47,7 @@ namespace CharacterController {
     //Fire is the main code. It waits to wait for the animation. THen it traces a ray from the camera to calculate the angle that the gun should shoot
     IEnumerator fire(){
       yield return new WaitForSeconds(.3f);
+      Zap();
       cameraRay.direction = mainCamera.transform.forward;
       cameraRay.origin = mainCamera.transform.position;
       RaycastHit hit;

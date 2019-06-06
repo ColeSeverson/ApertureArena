@@ -31,6 +31,7 @@ namespace CharacterController
 		[SerializeField] float c_IFrameDuration = 1f;
 		[SerializeField] float c_RollDelay = 1f;
 
+		public AudioClip[] oofs;
 		public Text deathText;
 		public Text livesText;
 
@@ -40,6 +41,7 @@ namespace CharacterController
 		CapsuleCollider m_Capsule;
 		SkinnedMeshRenderer c_Mesh;
 		ParticleSystem c_Particles;
+		AudioSource c_Source;
 
 		Vector3 c_CurrentMove;
 		Vector3 m_GroundNormal;
@@ -74,6 +76,7 @@ namespace CharacterController
 			c_Mesh = GetComponentsInChildren<SkinnedMeshRenderer>()[0];
 			c_Weapon = GetComponentsInChildren<Weapon>()[0];
 			c_Particles = GetComponent<ParticleSystem>();
+			c_Source = GetComponent<AudioSource>();
 			//c_Controller = GetComponent<GameController>();
 
 			c_Particles.Stop();
@@ -121,11 +124,16 @@ namespace CharacterController
 		}
 
 		//This method is for registering damage. Or other trigger collisions but we don't have any others yet
+		void oofNoise(){
+			c_Source.clip = oofs[Random.Range(0, oofs.Length)];
+			c_Source.Play();
+		}
 		void OnTriggerEnter(Collider col) {
 			if(c_IFrame){
 				return;
 			}
 			if (col.gameObject.tag == "Spear" || col.gameObject.tag == "Bullet") {
+				oofNoise();
 				c_Health -= 1;
 				c_IFrame = true;
 				StartCoroutine(IFrames());
@@ -332,7 +340,7 @@ namespace CharacterController
 			}
 		}
 
-		//Raycasts to see if we are standing on the ground or not. Better than onCollision, because 
+		//Raycasts to see if we are standing on the ground or not. Better than onCollision, because
 		void CheckGroundStatus()
 		{
 			RaycastHit hitInfo;
