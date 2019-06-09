@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7791573725244174847}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Spear
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,11 +86,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7791573725244174845}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.15943646, y: 1.2666057, z: 0.27281198}
-  m_Center: {x: -0.2877201, y: 0.050460212, z: -0.28844556}
+  m_Size: {x: 0.15943646, y: 1.2541785, z: 0.27281198}
+  m_Center: {x: -0.28771558, y: 0.24200124, z: -0.28845122}
 --- !u!1 &7791573725330080333
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,6 +229,7 @@ GameObject:
   - component: {fileID: 7791573725605962160}
   - component: {fileID: 7791573725605962163}
   - component: {fileID: 7791573725605962162}
+  - component: {fileID: 476775117305593690}
   m_Layer: 0
   m_Name: Lancer
   m_TagString: Boss
@@ -244,7 +245,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7791573725330085543}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.821, z: 0}
+  m_LocalPosition: {x: 0, y: 5.962, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7791573725330441015}
@@ -298,10 +299,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.8374109
+  m_Radius: 1.0584009
   m_Height: 2.1625538
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9508052, z: 0.37799048}
+  m_Center: {x: 0, y: 0.9508052, z: 0.15700054}
 --- !u!114 &7791573725605962160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,8 +315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d5f024168fb4511a00f72703743002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 100
-  deathClip: {fileID: 0}
+  startingHealth: 10
+  deathClip: {fileID: 8300000, guid: 0a784ea461ec44db79b44727136e71ba, type: 3}
+  hitClip: {fileID: 8300000, guid: f2b6c590792bf4de2bc133d2dfd72e80, type: 3}
   healthbar: {fileID: 8105416372149989632}
 --- !u!114 &7791573725605962163
 MonoBehaviour:
@@ -330,8 +332,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightDistance: 50
-  startHealth: 500
-  currHealth: 0
   _ranged: 0
   _patrolWaiting: 0
   _totalWaitTime: 3
@@ -357,6 +357,102 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!82 &476775117305593690
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7791573725330085543}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 0.8694172
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7791573725330087061
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,7 +779,7 @@ GameObject:
   - component: {fileID: 7791573726104248092}
   m_Layer: 0
   m_Name: Weapon
-  m_TagString: Boss
+  m_TagString: Spear
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1556,7 +1652,7 @@ GameObject:
   - component: {fileID: 7791573725560269046}
   m_Layer: 0
   m_Name: lod_dark_knight
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
