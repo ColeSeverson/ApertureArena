@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
     {
         if (timer == false)
             return;
-        Debug.Log("collision");
+        //Debug.Log("collision");
         Destroy(gameObject);
     }
 }
