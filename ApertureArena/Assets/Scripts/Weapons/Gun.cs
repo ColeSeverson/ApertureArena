@@ -13,6 +13,7 @@ namespace CharacterController {
     bool cooldown;
     public Camera mainCamera;
     public AudioClip[] zaps;
+  //  public bool testMode;
 
     private AudioSource source;
     private Ray cameraRay;
@@ -60,7 +61,10 @@ namespace CharacterController {
           if(Physics.Raycast (gunRay, out gunHit, hit.distance * 2)) {
             EnemyHealth enemyHealth = hit.collider.GetComponent<EnemyHealth>();
             if(enemyHealth != null) {
-              enemyHealth.TakeDamage (1, hit.point);
+              if(testMode)
+                enemyHealth.TakeDamage (100, hit.point);
+              else
+                enemyHealth.TakeDamage (1, hit.point);
             }
             gunLine.SetPosition (1, gunHit.point);
           } else {

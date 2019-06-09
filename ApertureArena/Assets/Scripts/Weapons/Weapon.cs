@@ -9,6 +9,7 @@ using UnityEngine;
 namespace CharacterController {
   public class Weapon : MonoBehaviour
   {
+    public bool testMode;
     public virtual void Execute(){
       Debug.Log("Default Execute");
     }

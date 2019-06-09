@@ -139,6 +139,10 @@ namespace CharacterController
 				StartCoroutine(IFrames());
 			}
 		}
+		public void toggleTestMode(){
+			Debug.Log("ToggleTestMode");
+			c_Weapon.testMode = !c_Weapon.testMode;
+		}
 		//Helper routines for timing
 		IEnumerator IFrames() {
 				yield return new WaitForSeconds(c_IFrameDuration);

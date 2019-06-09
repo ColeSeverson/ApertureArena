@@ -90,4 +90,10 @@ namespace CharacterController {
     public override void Execute(bool aiming){
     }
   }
+  public class TestMode : Command
+  {
+    public override void Execute(ThirdPersonCharacter character) {
+      character.toggleTestMode();
+    }
+  }
 }
