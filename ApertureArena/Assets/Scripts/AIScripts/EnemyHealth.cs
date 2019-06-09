@@ -10,7 +10,8 @@ namespace EnemyInformation
     {
         public  int startingHealth = 10;            // The amount of health the enemy starts the game with.
         private int currentHealth;                // The current health the enemy has.
-        public AudioClip deathClip;                 // The sound to play when the enemy dies.
+        public AudioClip deathClip;
+        public AudioClip hitClip;            
         public RectTransform healthbar;
 
         Animator anim;                              // Reference to the animator.
@@ -23,18 +24,23 @@ namespace EnemyInformation
         {
             // Setting up the references for use later.
             anim = GetComponent<Animator>();
+
             enemyAudio = GetComponent<AudioSource>();
             capsuleCollider = GetComponent<CapsuleCollider>();
-
+            enemyAudio.GetComponent<AudioSource>();
             // Setting the current health when the enemy first spawns.
             currentHealth = startingHealth;
         }
+
         IEnumerator IFrames(){
           yield return new WaitForSeconds(1f);
           takingDamage = false;
         }
+
         public void TakeDamage(int amount, Vector3 hitPoint)
         {
+
+            anim.SetBool("isAlerted", true);
 
             // If the enemy is dead...
             if (isDead || takingDamage)
@@ -42,11 +48,15 @@ namespace EnemyInformation
                 return;
 
             // Play the hurt sound effect. We havent implemented this yet but will in the future
-            //enemyAudio.Play();
+            enemyAudio.clip = hitClip;
+            enemyAudio.volume = 0.25f;
+            enemyAudio.Play();
+
 
             // Reduce the current health by the amount of damage sustained.
             currentHealth -= amount;
             StartCoroutine(IFrames());
+
             // If the current health is less than or equal to zero...
             if (currentHealth <= 0)
             {
@@ -64,6 +74,9 @@ namespace EnemyInformation
             isDead = true;
 
             // Tell the animator that the enemy is dead.
+            enemyAudio.clip = deathClip;
+            enemyAudio.volume = 0.05f;
+            enemyAudio.Play();
             anim.SetBool("isDead", true);
             Destroy(gameObject, 2f);
 

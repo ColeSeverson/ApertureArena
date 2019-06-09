@@ -10,8 +10,6 @@
 public class AI : MonoBehaviour
 {
     public float sightDistance = 50f;
-  //  public int startHealth = 10;
-  //  public int currHealth;
     public bool _ranged = false;
     Transform player;
     UnityEngine.AI.NavMeshAgent nav;
@@ -27,7 +25,6 @@ public class AI : MonoBehaviour
     ConnectWaypoints _currentWaypoint;
     ConnectWaypoints _previousWaypoint;
 
-    bool _alerted = false;
     bool _travelling = false;
     bool _waiting;
     float _waitTimer;
@@ -84,7 +81,7 @@ public class AI : MonoBehaviour
         {
             OnDeath();
         }
-        else if (CanSeeEnemy() || _alerted)
+        else if (CanSeeEnemy() || anim.GetBool("isAlerted"))
         {
             if (_ranged)
             {
@@ -112,7 +109,7 @@ public class AI : MonoBehaviour
             }
         }
 
-        if (_waiting && !_alerted)
+        if (_waiting && !anim.GetBool("isAlerted"))
         {
             _waitTimer += Time.deltaTime;
             if (_waitTimer >= _totalWaitTime)
@@ -128,12 +125,12 @@ public class AI : MonoBehaviour
     //When the ranged enemy is it does this and sprays bullets at the
     private void RangedAlerted()
     {
-        if (CanSeeEnemy())
+        if (CanSeeEnemy() || (Vector3.Distance(transform.position, player.position) < 5))
         {
             // if you can see them shoot them.
             transform.LookAt(player.position);
             anim.SetBool("isMoving", false);
-            //nav.speed = 0;
+            nav.speed = 0;
             anim.SetTrigger("Attack");
             bh.Shoot();
 
@@ -142,7 +139,7 @@ public class AI : MonoBehaviour
         {
             //if you cant see them move so that you'll be able to shoot them
             nav.SetDestination(player.position);
-            //nav.speed = 1;
+            nav.speed = 1;
             anim.ResetTrigger("Attack");
             anim.SetBool("isMoving", true);
         }
@@ -154,14 +151,12 @@ public class AI : MonoBehaviour
         if(Vector3.Distance(transform.position, player.position) < 2)
         {
             anim.SetBool("isMoving", false);
-            //nav.speed = 0;
             anim.SetTrigger("Attack");
         }
         else
         {
             nav.SetDestination(player.position);
             anim.ResetTrigger("Attack");
-            //nav.speed = 2;
             anim.SetBool("isMoving", true);
 
         }
@@ -216,7 +211,7 @@ public class AI : MonoBehaviour
 
                     if (hit.collider.tag == "Player")
                     {
-                        _alerted = true;
+                        anim.SetBool("isAlerted", true);
                         return true;
                     }
                     else
