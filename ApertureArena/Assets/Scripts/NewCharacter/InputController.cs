@@ -38,6 +38,7 @@ namespace CharacterController {
       buttonShift = new Sprint();
       buttonLeftMouse = new Attack();
       buttonRightMouse = new ADS();
+      buttonControl = new TestMode();
 
       controller.LockMouse(true);
     }
@@ -66,7 +67,10 @@ namespace CharacterController {
         }
       }
       //buttonLeftMouse.Execute(character, Input.GetMouseButton(0));
-      //buttonControl.Execute(Input.GetKey(KeyCode.LeftControl));
+      //buttonControl.Execute(Input.GetKeyDown(KeyCode.LeftControl));
+      if (Input.GetKeyDown(KeyCode.LeftControl)) {
+        buttonControl.Execute(character);
+      }
       buttonSpace.Execute(Input.GetKey(KeyCode.Space));
       buttonShift.Execute(Input.GetKey(KeyCode.LeftShift));
       buttonRightMouse.Execute(Input.GetMouseButtonDown(1));
