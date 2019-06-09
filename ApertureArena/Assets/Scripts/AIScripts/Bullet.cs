@@ -6,21 +6,25 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private bool timer;
-        private void Start()
+
+    private void Start()
     {
         timer = false;
         StartCoroutine(Timer());
     }
+
     IEnumerator Timer()
     {
         yield return new WaitForSeconds(.5f);
         timer = true;
     }
+
     private void OnTriggerEnter(Collider collision)
     {
-        if (timer == false)
+
+        if (timer == false && collision.gameObject.tag == "Bullet")
             return;
-        //Debug.Log("collision");
+
         Destroy(gameObject);
     }
 }

@@ -22,7 +22,10 @@ public class BulletHellAI : MonoBehaviour
     void Start(){
       patterns = new Pattern[] {
         new Nova(),
-        new Spray()
+        new Cone(),
+        new Wall(),
+        new Spray(),
+        new Wave()
       };
     }
     void Update()
